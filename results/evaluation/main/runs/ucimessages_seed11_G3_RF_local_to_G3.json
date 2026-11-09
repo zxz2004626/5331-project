@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "scenario": "main",
+  "dataset": "ucimessages",
+  "seed": 11,
+  "source_generator": "G3",
+  "model": "RF",
+  "features": "local",
+  "feature_names": [
+    "common_neighbors",
+    "jaccard",
+    "adamic_adar"
+  ],
+  "n_jobs": 2,
+  "source_cache_fingerprint": "28c0a4c5276c1e30e0da3030f309e83d20a34e9ef39da38e0cac1930d64130c7",
+  "evaluation_source_sha256": "5124aded4ded84ac3a59903cf44aa1a5005d0ed88cc517ed533eb4b755f17309",
+  "python_version": "3.11.4",
+  "numpy_version": "1.24.3",
+  "sklearn_version": "1.3.0",
+  "status": "complete",
+  "run_id": "ucimessages_seed11_G3_RF_local_to_G3",
+  "run_fingerprint": "69dacb711e9d3a5257cab1db16033b8955c2b7d098e0c60d89ca1ac292055f7b",
+  "model_fingerprint": "f1ea77d44a42796a65654937ba0e57688525f469106e2ee3e605c620ae7d3e4b",
+  "target_generator": "G3",
+  "target_cache_fingerprint": "28c0a4c5276c1e30e0da3030f309e83d20a34e9ef39da38e0cac1930d64130c7",
+  "n_train": 56673,
+  "n_val": 3336,
+  "n_test": 1881,
+  "params": {
+    "n_estimators": 100,
+    "class_weight": "balanced_subsample",
+    "n_jobs": 2,
+    "min_samples_leaf": 5,
+    "random_state": 11
+  },
+  "selected_validation_average_precision": 0.05910272107449473,
+  "metrics": {
+    "average_precision": 0.05516431924882629,
+    "pr_auc_trapezoid": 0.5275821596244131,
+    "roc_auc": 0.5495243424734191,
+    "precision_at_k": 0.0425531914893617,
+    "recall_at_k": 0.0425531914893617,
+    "k": 94,
+    "true_positives_at_k": 4,
+    "n": 1881,
+    "n_anomalies": 94,
+    "anomaly_fraction": 0.049973418394471024
+  },
+  "novel_normal_metrics": {
+    "average_precision": 0.23039215686274508,
+    "pr_auc_trapezoid": 0.6151960784313726,
+    "roc_auc": 0.509375,
+    "precision_at_k": 0.14893617021276595,
+    "recall_at_k": 0.14893617021276595,
+    "k": 94,
+    "true_positives_at_k": 14,
+    "n": 414,
+    "n_anomalies": 94,
+    "anomaly_fraction": 0.22705314009661837
+  },
+  "novel_normal_status": "complete",
+  "normal_previously_seen_fraction": 0.8209289311695579,
+  "times": {
+    "selection_seconds": 3.006763800047338,
+    "refit_seconds": 1.5905273000244051,
+    "evaluation_seconds": 0.0715941998641938
+  },
+  "prediction_file": "results\\evaluation\\main\\predictions\\ucimessages_seed11_G3_RF_local_to_G3.npz",
+  "model_metadata_file": "results\\evaluation\\main\\models\\ucimessages_seed11_G3_RF_local.json",
+  "tie_breaking": "ascending preserved target-cache row index",
+  "feature_importance_impurity": {
+    "common_neighbors": 0.28710056336260026,
+    "jaccard": 0.2790825662107144,
+    "adamic_adar": 0.4338168704266854
+  }
+}

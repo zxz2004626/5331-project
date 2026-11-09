@@ -1,0 +1,304 @@
+{
+  "status": "complete",
+  "verified_runs": 40,
+  "checks": [
+    {
+      "run_id": "movielens_seed11_G0_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed11_G1_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed11_G2_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed11_G3_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed23_G0_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed23_G1_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed23_G2_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed23_G3_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed37_G0_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed37_G1_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed37_G2_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed37_G3_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed51_G0_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed51_G1_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed51_G2_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed51_G3_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed71_G0_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed71_G1_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed71_G2_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "movielens_seed71_G3_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed11_G0_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed11_G1_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed11_G2_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed11_G3_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed23_G0_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed23_G1_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed23_G2_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed23_G3_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed37_G0_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed37_G1_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed37_G2_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed37_G3_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed51_G0_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed51_G1_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed51_G2_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed51_G3_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed71_G0_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed71_G1_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed71_G2_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    },
+    {
+      "run_id": "ucimessages_seed71_G3_RF_extended_no_pair",
+      "status": "verified",
+      "n_jobs": 1
+    }
+  ],
+  "paired_summary": [
+    {
+      "dataset": "movielens",
+      "generator": "G0",
+      "full_AP": 0.8786964106273777,
+      "no_pair_AP": 0.877327266651743,
+      "delta_AP": -0.0013691439756347012,
+      "delta_sd": 0.00297531345834362,
+      "full_novel_AP": 0.8786964106273777,
+      "no_pair_novel_AP": 0.877327266651743,
+      "delta_novel_AP": -0.0013691439756347012,
+      "novel_anomaly_fraction": 0.05
+    },
+    {
+      "dataset": "movielens",
+      "generator": "G1",
+      "full_AP": 0.7648749168110138,
+      "no_pair_AP": 0.7666446524106264,
+      "delta_AP": 0.0017697355996125542,
+      "delta_sd": 0.003317487968634701,
+      "full_novel_AP": 0.7648749168110138,
+      "no_pair_novel_AP": 0.7666446524106264,
+      "delta_novel_AP": 0.0017697355996125542,
+      "novel_anomaly_fraction": 0.05
+    },
+    {
+      "dataset": "movielens",
+      "generator": "G2",
+      "full_AP": 0.7615451287822624,
+      "no_pair_AP": 0.7645565388110646,
+      "delta_AP": 0.0030114100288020753,
+      "delta_sd": 0.003504743234833558,
+      "full_novel_AP": 0.7615451287822624,
+      "no_pair_novel_AP": 0.7645565388110646,
+      "delta_novel_AP": 0.0030114100288020753,
+      "novel_anomaly_fraction": 0.05
+    },
+    {
+      "dataset": "movielens",
+      "generator": "G3",
+      "full_AP": 0.6905399242744762,
+      "no_pair_AP": 0.6965353080078004,
+      "delta_AP": 0.005995383733324156,
+      "delta_sd": 0.004312180578333272,
+      "full_novel_AP": 0.6905399242744762,
+      "no_pair_novel_AP": 0.6965353080078004,
+      "delta_novel_AP": 0.005995383733324156,
+      "novel_anomaly_fraction": 0.05
+    },
+    {
+      "dataset": "ucimessages",
+      "generator": "G0",
+      "full_AP": 0.7032383572050681,
+      "no_pair_AP": 0.6270574959640406,
+      "delta_AP": -0.07618086124102744,
+      "delta_sd": 0.018515728679347275,
+      "full_novel_AP": 0.7067724136307608,
+      "no_pair_novel_AP": 0.7167017316532984,
+      "delta_novel_AP": 0.009929318022537669,
+      "novel_anomaly_fraction": 0.2270531400966184
+    },
+    {
+      "dataset": "ucimessages",
+      "generator": "G1",
+      "full_AP": 0.5997573366233417,
+      "no_pair_AP": 0.5154743410858793,
+      "delta_AP": -0.08428299553746238,
+      "delta_sd": 0.03642453004487943,
+      "full_novel_AP": 0.5999731096629363,
+      "no_pair_novel_AP": 0.5992967708637919,
+      "delta_novel_AP": -0.0006763387991445047,
+      "novel_anomaly_fraction": 0.2270531400966184
+    },
+    {
+      "dataset": "ucimessages",
+      "generator": "G2",
+      "full_AP": 0.5689433150937949,
+      "no_pair_AP": 0.47663662270877083,
+      "delta_AP": -0.09230669238502412,
+      "delta_sd": 0.028011168327401255,
+      "full_novel_AP": 0.569128631775697,
+      "no_pair_novel_AP": 0.5632199706593634,
+      "delta_novel_AP": -0.0059086611163337134,
+      "novel_anomaly_fraction": 0.2270531400966184
+    },
+    {
+      "dataset": "ucimessages",
+      "generator": "G3",
+      "full_AP": 0.5370844418357368,
+      "no_pair_AP": 0.45885190095247674,
+      "delta_AP": -0.0782325408832601,
+      "delta_sd": 0.032852094673981716,
+      "full_novel_AP": 0.5371178577337207,
+      "no_pair_novel_AP": 0.5410754660046992,
+      "delta_novel_AP": 0.0039576082709784745,
+      "novel_anomaly_fraction": 0.2270531400966184
+    }
+  ]
+}

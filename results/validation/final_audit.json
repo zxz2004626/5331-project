@@ -1,0 +1,3426 @@
+{
+  "status": "passed",
+  "verification_utc": "2026-09-29T06:59:29.751137+00:00",
+  "available_only": false,
+  "models_option": false,
+  "expected_evaluations": 1080,
+  "verified_evaluations": 1080,
+  "evaluation_counts": {
+    "main": 840,
+    "no_pair": 40,
+    "ratio01": 40,
+    "ratio10": 40,
+    "window500": 40,
+    "window2000": 40,
+    "past_only": 40
+  },
+  "expected_caches": 140,
+  "verified_caches": 140,
+  "verified_model_metadata": 560,
+  "serialized_models_rescored": 0,
+  "csv_rows_checked": 1080,
+  "summary_groups_checked": 208,
+  "max_absolute_metric_error": 3.3306690738754696e-16,
+  "max_absolute_csv_error": 2.220446049250313e-16,
+  "max_absolute_model_probability_error": null,
+  "elapsed_seconds": 255.0668387999758,
+  "seeds": [
+    11,
+    23,
+    37,
+    51,
+    71
+  ],
+  "evaluation_source_sha256": "5124aded4ded84ac3a59903cf44aa1a5005d0ed88cc517ed533eb4b755f17309",
+  "generator_source_sha256": "89c6d3ebf566b7d46abd38888d8201c4ed733f440a6e0c0a851627639b9e4007",
+  "no_pair_source_sha256": "d818130f774dd0f82bc199f070cc98e17283e9b9f97d4d20367222317c934e03",
+  "verifier_source_sha256": "47d5b54dac35095475d4d06a3a6a93254d0c869cc389cce1afa7ec2eb0979b57",
+  "missing_artifacts": [],
+  "excluded_incomplete_or_failed_runs": [],
+  "historical_failures": [
+    {
+      "path": "results\\failures\\initial_pilot.json",
+      "status": "failed_then_fixed",
+      "stage": "initial_uncounted_pilot",
+      "jobs": [
+        "main/ucimessages/11/G0",
+        "main/ucimessages/11/G3"
+      ],
+      "error": "NumPy bool_ in audit JSON was not serializable; feature cache written but no complete manifest",
+      "resolution": "Cast audit flag to Python bool and regenerate; incomplete caches never eligible for evaluation"
+    }
+  ],
+  "errors": [],
+  "cache_checksums_and_counts": [
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G0",
+      "npz_sha256": "12facee339db0d452e071fa0d5777dd5d41c1eefdadf87ff0f32438039a63b6d",
+      "manifest_sha256": "0315d3ace63be69b453fa1b69b45bb4b374af854f1c333dc841df39cf99ecb9f",
+      "fingerprint": "88f5a164659d77ae731857814ccb519de9cbe479c207eb09b1bb308680cdf917",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G1",
+      "npz_sha256": "cbef7bc7b18904edbe85d6581edc40300287e4e569c8dfd4c4da32bb587981b0",
+      "manifest_sha256": "504f49f8530bbb10561296664db6a9a258d9ca1f12142f7b325b39085e5e5824",
+      "fingerprint": "04e0f343853d7acaf2ec69e9edc6910a3d8b3db3e99b84200ceda3d232a1f8cf",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G2",
+      "npz_sha256": "5af50a233a4a476bd51df907016a7085968914a68f044ca5670685b7221d197b",
+      "manifest_sha256": "4a012af8a9382ab8339eeb3b8abb85b23467d889f6ae79dbb7b2b80f0d7241b4",
+      "fingerprint": "e287b39d9af9fad14400edcc9ddb756a12e47803ce726f9dc4931bd6a722e184",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G3",
+      "npz_sha256": "efbfd8584a728444ae11384c9090713525d321c2f24b901fc02bc6040dde7a74",
+      "manifest_sha256": "53d184b264f01cead7dc6434cbb6b7a47fe068ba6ec8c4e0d49ad7b48ff5976d",
+      "fingerprint": "4fab97f931bd86d39122c2ae1da222895e37371c8596f8b1da47f50dbb851429",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G0",
+      "npz_sha256": "36efd4d07e0e21727e8f94005a3dccbe19e6fc641fbbcedcad164c5b00e793c7",
+      "manifest_sha256": "e11982fc77211663f821a7f21d5e46514e822de11f56b4e8b2730de51ba1a3ff",
+      "fingerprint": "f721abc7b583dbcd0abfd63f54c6e787dcd5191fada907578dbf914ec7661255",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G1",
+      "npz_sha256": "4a6086a0a3f38be5313074c901930949368e03a8e2c03efc24d497ca107d9f0a",
+      "manifest_sha256": "8a7cc0febafe5a300f5480775f050f4e107fe94224116bae2bf84b15dea497d3",
+      "fingerprint": "98981f25206828f4a28d1ea915d28b87bc4b164ee3e0ecbaf5ceb9c853583591",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G2",
+      "npz_sha256": "b6a4c469576369c3396ed682062db1731f5bbba94ab29c7b3e9dda75657d688f",
+      "manifest_sha256": "6aa26e5d599d356735fa78fcfde3cd77c544fef1507fae16aeb3a95dbeff2ddb",
+      "fingerprint": "75e9a356364637797383e45298c6344014602f0aca4252c1b6857f128da6f9b0",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G3",
+      "npz_sha256": "1a32b7ca751d332c3eb75892b45684c37a3df4254275e11ebfeae7c821180195",
+      "manifest_sha256": "6dda83f8cbba7dde1d26b31406d62d7982cad1d7b704dcd1cd4b96001a779eb3",
+      "fingerprint": "80c8436dc85fb0948445edfc6c36a80fe95caabfc7e2f5a4e551055a9dcd65ae",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G0",
+      "npz_sha256": "3c411110de65188f38c181c25eb5fe66a70b75875ae4243ef9ae754823272640",
+      "manifest_sha256": "8ac067fa1466e6c18541cbc60bad0bab1c8d1998ff7e9ed7a192e667fd4dc273",
+      "fingerprint": "2a677abcd821ebbe097fd3186ff20cc809a7a83c323e46e830a361b42f2a1d87",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G1",
+      "npz_sha256": "f574a22d9a00650fc88548a0ac642f01164471de7983f1b0d8ef281a3d503284",
+      "manifest_sha256": "e2c5f92340f592252c45b7d3392d018c2fca877b92e408cf578e298adc569dbb",
+      "fingerprint": "42d8fb7c49b9510957030e8a7effc1ab549c1bb09f240c89e94687e644f21b58",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G2",
+      "npz_sha256": "34684e5932754cd5941e5db418991b318f350167e6d87b9b6bbc4aca00631752",
+      "manifest_sha256": "5baab7fff13cb756634db32944a841b14d77bfc3cd2308b7c71bf6eb86887c11",
+      "fingerprint": "b2d261358c7ab90ebdc29f98cb49cbf04476c7072d1ebe5a9c0cd124f55d3106",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G3",
+      "npz_sha256": "007fe6f3a45b10e1e9c72c6790fb5047c926da101ba437fce2366eec776a88de",
+      "manifest_sha256": "eb2c04654e3efcef9b3e029e401183e24249759d53988e75eeac9cdfd7a75cb3",
+      "fingerprint": "cc3c87d780da39fe693862dadd81c0acee26e48c4aa15e92d824e40a76fccf51",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G0",
+      "npz_sha256": "6709ba18136ee5bb80a18d39dc04fc62cc1419f46d36c370c234ad8565f1b0dc",
+      "manifest_sha256": "e68daa63b4e407ee1ad77dedbc1b6ce3cb8d6ca050f3e806d8725c9e26fd7ef8",
+      "fingerprint": "9ec3808c3d5550a6b33a6315f8f39139edc749b3311dcbfb05013d21137fa3a7",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G1",
+      "npz_sha256": "7180e2ab88f313dbf7b54469958697dcc0080406ac0a266f8e31da648046083f",
+      "manifest_sha256": "b5c57d22aac830c44702b602126162b850367af8e1e9077bd20a5c8749dec6ae",
+      "fingerprint": "b24337c6faba5aa2d62220fc61904cde77b6dc9027d08c139172b8b4e2df2a38",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G2",
+      "npz_sha256": "fe479b40fd868b9fb0267ed32dda714022b8ba61ba6a521e6fe321213dee09a3",
+      "manifest_sha256": "b9b4040ad1b178384dcfa345d9c9e1e709b4b14bdb7bb12c7c707e8c9c01f515",
+      "fingerprint": "8ed56c94f576a16b7bf1603f0dcd415aea69dccfd64b3f01bd5e7cd10002bb23",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G3",
+      "npz_sha256": "88a2f7195936b5137cecf9762ecdbfa216c1fbcaa70664b9f9f738c99f831b4a",
+      "manifest_sha256": "0a87ce11f9f8059c4152968fa2b989899d70b0745b71cd5a56d57888a0a7367f",
+      "fingerprint": "4be31c3e08cf6f44ad2ff0133d643b78c0420dd20f1c363b8eabe1bdd0177479",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G0",
+      "npz_sha256": "3e4ac46a83edaaf04c9fd2931dbabbc340abb485641210e5d1a0f2a453c86ce2",
+      "manifest_sha256": "49d324a0253126dc4e60afd25a7407ddb6e273903f60efa2607c5116ca9f53dd",
+      "fingerprint": "e6a456d73dcd717fef71042633b0860d20e6ce1e2fc41f08d0eda1b7cdbad58a",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G1",
+      "npz_sha256": "7cae850217936d03af88ff94a292d89f04ad5558cf1db2315a28d588a0f6d927",
+      "manifest_sha256": "4cc4b91edcdd2e6fa155713001e425c521b452428b4b0c11d3ef7f2eaa73d3cb",
+      "fingerprint": "94d292102315c0de8a72ff9b88d914c42238db47ad090e6b8b1207d8d644f32b",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G2",
+      "npz_sha256": "047603fe303679499ef19da4936ea8b7803b15af9cbb225ab4987159d295d0bb",
+      "manifest_sha256": "8c722c9d96c21c368cd4946107923159ddd3c403518cd0414829c6f53bb8c76b",
+      "fingerprint": "1e769a62921f193e9462ca3622237296ea671dfe962275e3b6b687a645787f0a",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G3",
+      "npz_sha256": "59dab348f5115d1e03a0c5cbe8df80340b8c145b311420b3d844c97661f1c660",
+      "manifest_sha256": "044f41001c496115ca2f9add217333921c3a479b2a03f0aac6e0e64d0c347312",
+      "fingerprint": "58a9da0cb6dfa5c26f9791efb547c5ee997a7f9fd851ffe917bf911ed9d83564",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G0",
+      "npz_sha256": "2f25e33f774508e19c57854e41c9022cca292279ae2854b627e442a69a168fc3",
+      "manifest_sha256": "a099d3fbece8a474e1a5493c8c4d7010a54d58947ab8b97a86a5d82621c196c9",
+      "fingerprint": "b041c002f34bd5a7cc6883a6f99078b4dc182b042cc2784c59c8abe48ca6c0af",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 650
+        },
+        {
+          "normal": 15778,
+          "anomaly": 159
+        },
+        {
+          "normal": 18886,
+          "anomaly": 191
+        }
+      ],
+      "n_events": 99999
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G3",
+      "npz_sha256": "8fa0595ff8fbc078a5e60bc5e0bd7a010549fbeeabbb5c0ad2da2cb8a2fe5541",
+      "manifest_sha256": "6e0aa01f9705260f4294c93fa7f7e79eab7af5c5d8c10d7f583d0f70ab0f87f9",
+      "fingerprint": "ab90c8b36e4f8c5637ceba179346fbd68dd6683aaed2d9204ce2e16f731ac527",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 650
+        },
+        {
+          "normal": 15778,
+          "anomaly": 159
+        },
+        {
+          "normal": 18886,
+          "anomaly": 191
+        }
+      ],
+      "n_events": 99999
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G0",
+      "npz_sha256": "7e3bdbab5331639b83a410e48e1ff5aa7cd6a7704ba715726c307197bc925244",
+      "manifest_sha256": "fe42355c3f77b9f1d1d32564fa713ab92d6fec05f5145b45a8bffed9c57d9f5a",
+      "fingerprint": "d451f93d85515332572dbaa77869b7ff70ce66a9583fed1f4c37c4b5b6516819",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 650
+        },
+        {
+          "normal": 15778,
+          "anomaly": 159
+        },
+        {
+          "normal": 18886,
+          "anomaly": 191
+        }
+      ],
+      "n_events": 99999
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G3",
+      "npz_sha256": "e848e7c3ef54e04b101fe7fd97db562ff526d0e85f584a650aec228a028c7c2a",
+      "manifest_sha256": "26d10af39d59462bab4f0f32a3c4a5ee55b43492c9c93901c79f8fcc6fe633e1",
+      "fingerprint": "38906dc0037e80781f9a9d99c73c411e64ed7662216ee0e32e1a51bf80130da2",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 650
+        },
+        {
+          "normal": 15778,
+          "anomaly": 159
+        },
+        {
+          "normal": 18886,
+          "anomaly": 191
+        }
+      ],
+      "n_events": 99999
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G0",
+      "npz_sha256": "ad651f042fdb7493ac9920adb8855b97bd3e4bc702818e8d07b3638c91ed5776",
+      "manifest_sha256": "24adbceec25082fb396674933796a5047e07512996b29151b19b9533d9d4a868",
+      "fingerprint": "570b9548a795d0eb8211e7db098bcf8deb999ecdad12374ff8936fc143c2cd57",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 650
+        },
+        {
+          "normal": 15778,
+          "anomaly": 159
+        },
+        {
+          "normal": 18886,
+          "anomaly": 191
+        }
+      ],
+      "n_events": 99999
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G3",
+      "npz_sha256": "bd70662cb008635fb395e288e8ddbf17a4f5dbc0bd9bcc43fd29164bb06e6aae",
+      "manifest_sha256": "b3ceb3446f8f3b8c663edd09d3fbf5f1ddf18356a0871b63b73af28ccbd7f628",
+      "fingerprint": "6fbb696bb77463b7f79c1d951b769177a7dc953c419916ffa204d26a8ce5ef9f",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 650
+        },
+        {
+          "normal": 15778,
+          "anomaly": 159
+        },
+        {
+          "normal": 18886,
+          "anomaly": 191
+        }
+      ],
+      "n_events": 99999
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G0",
+      "npz_sha256": "0b4bf5fdb4d18c86ead9bf9684c29474a84c543f819777ee6958b576bca2469a",
+      "manifest_sha256": "01527cd76c51748094a4267324fd8a63d55fa6d48b676716963a03ed3d9bdc04",
+      "fingerprint": "33351c3d51fc804024dc65dc86e1c65c8cdfeb8613278c2856364aa7ffb648a6",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 650
+        },
+        {
+          "normal": 15778,
+          "anomaly": 159
+        },
+        {
+          "normal": 18886,
+          "anomaly": 191
+        }
+      ],
+      "n_events": 99999
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G3",
+      "npz_sha256": "edee12c71c215a6a86810f7f9e534c86d35991db84c4cd0f4d98c71a7f0d38cb",
+      "manifest_sha256": "acb06bc5745c9b0cb5be13018aa0478b6906e45d364067ceb16aadde7bfc9a42",
+      "fingerprint": "e20af9390336069575ac99f7b76031399936ee8ca6d204e0e11035cb8e3e3546",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 650
+        },
+        {
+          "normal": 15778,
+          "anomaly": 159
+        },
+        {
+          "normal": 18886,
+          "anomaly": 191
+        }
+      ],
+      "n_events": 99999
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G0",
+      "npz_sha256": "dd823263ee3e6b81c1843f68662b3b07904c82f89d7c5ef87213d6d199716ba1",
+      "manifest_sha256": "641f96c9cd574e64a3b80e4458c6c2c97502e5e63e81b31ce7e00a7877705cbf",
+      "fingerprint": "00ed296f65826f6250b29ca72f63bfc4f14d59d6d1b152e909d8471b2cf1cfd5",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 650
+        },
+        {
+          "normal": 15778,
+          "anomaly": 159
+        },
+        {
+          "normal": 18886,
+          "anomaly": 191
+        }
+      ],
+      "n_events": 99999
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G3",
+      "npz_sha256": "78f377d1746f3ddd31afb86e627c146658927fcd6506dd26adbe6be7e3ea9c2c",
+      "manifest_sha256": "893d50e1170ed96511078abdfe56d5a82b47b0f7f1afee75721eebc0ad60d65b",
+      "fingerprint": "4bd0f1b3094dde1da42cac1d2f5e66de783f7dca03ddeffcd07e0c796f509672",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 650
+        },
+        {
+          "normal": 15778,
+          "anomaly": 159
+        },
+        {
+          "normal": 18886,
+          "anomaly": 191
+        }
+      ],
+      "n_events": 99999
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G0",
+      "npz_sha256": "8489c6192ef015aa176d1f6420b0cf42392a6a9cbd8678ec2c862cddbcdc799b",
+      "manifest_sha256": "757425f4d9589be834e127508880cd71590e4aa16d87ed1eca641c273d7f882d",
+      "fingerprint": "5757c2725380d3941e212f2615099ad2ead9b2cebcee99f1a89df99bee01a19c",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 7148
+        },
+        {
+          "normal": 15778,
+          "anomaly": 1753
+        },
+        {
+          "normal": 18886,
+          "anomaly": 2098
+        }
+      ],
+      "n_events": 109998
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G3",
+      "npz_sha256": "41b5ab5f61a74df360b5ed435bff8bce9d38f8c206798f1c0f75c7e338e40058",
+      "manifest_sha256": "c8327ac34e66af852750060a43c747813238255a8064ca04802d090e1f3b078e",
+      "fingerprint": "e79b7174394dd7add16b198c2b0e05b7fb329ddc06f723af7dd17320b130163d",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 7148
+        },
+        {
+          "normal": 15778,
+          "anomaly": 1753
+        },
+        {
+          "normal": 18886,
+          "anomaly": 2098
+        }
+      ],
+      "n_events": 109998
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G0",
+      "npz_sha256": "94a9b8adea792e6222d181d4ec44cec952e2707f621cb32b73e1f69457a294d6",
+      "manifest_sha256": "0d16c5ecbe3aca7746bb89ba9ef9e75fcc8ee999ec9d217bdab3956e8e9fd98d",
+      "fingerprint": "b741d7bbeff473dd19fffa89cdc58e2892663b18e8b890c933d88ce471fadade",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 7148
+        },
+        {
+          "normal": 15778,
+          "anomaly": 1753
+        },
+        {
+          "normal": 18886,
+          "anomaly": 2098
+        }
+      ],
+      "n_events": 109998
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G3",
+      "npz_sha256": "e083c784890b928bb823768909173fb40592e58f4880beae9e7c0686398c3494",
+      "manifest_sha256": "63465777cd3e79f0fbb9bca7de2663639908ddbbcc7c67f08130add750895a73",
+      "fingerprint": "6f011c8d7c06ae530391036bdcacdba113a188687f4b7cda7d53868d27fdf58c",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 7148
+        },
+        {
+          "normal": 15778,
+          "anomaly": 1753
+        },
+        {
+          "normal": 18886,
+          "anomaly": 2098
+        }
+      ],
+      "n_events": 109998
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G0",
+      "npz_sha256": "e7a33327d93c5a7f23c100a58e5630cf959d39cbb327a3924003d87603417187",
+      "manifest_sha256": "90188dd167aa2c18c39710e9be07e3aa6539ae098a44b4ba3a06b730221b471d",
+      "fingerprint": "7aa6ed9b24eaf06429e542e9880689a18fd63fe003f12f4c5d235293d01a022a",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 7148
+        },
+        {
+          "normal": 15778,
+          "anomaly": 1753
+        },
+        {
+          "normal": 18886,
+          "anomaly": 2098
+        }
+      ],
+      "n_events": 109998
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G3",
+      "npz_sha256": "32270d86d80bf78e245a49ad236eae97b6e8da60ea735844ac89384c773a3454",
+      "manifest_sha256": "9d6d240c8876dd4d61f62b0734fd60689a46c7c02bd219d5bbb0847f69f2b7e5",
+      "fingerprint": "4f9ca8e3bdfaa8878925328901cf31d46e2267b3aadb7eb0853410745fb838ee",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 7148
+        },
+        {
+          "normal": 15778,
+          "anomaly": 1753
+        },
+        {
+          "normal": 18886,
+          "anomaly": 2098
+        }
+      ],
+      "n_events": 109998
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G0",
+      "npz_sha256": "636eff78b6f6fab5c7c947ed0fdbeff6ce40dfa44ede35c7ba6821b70497b54c",
+      "manifest_sha256": "37996f8fe0555c5171dfddac04a1f0bbb7b4ae4225f3b8f4b45a71b653113f07",
+      "fingerprint": "f9a2c0bd66347bbbff24597049d0bf1b0f9dc68dc9888e0f0cb5cf7a43a6daa0",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 7148
+        },
+        {
+          "normal": 15778,
+          "anomaly": 1753
+        },
+        {
+          "normal": 18886,
+          "anomaly": 2098
+        }
+      ],
+      "n_events": 109998
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G3",
+      "npz_sha256": "774caed678aed3fb4f922c62acfe366bb6fc24c20dcda83e55a7f812e6c3489f",
+      "manifest_sha256": "d6e31a1c092686b39a33ccf8e93343cb4abd5b904130e2ba0e44dfcebfe7b5f8",
+      "fingerprint": "255a83ed84cf5a4dc2640b83764c547063fe863cfc5f33bd19f78532a4c54895",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 7148
+        },
+        {
+          "normal": 15778,
+          "anomaly": 1753
+        },
+        {
+          "normal": 18886,
+          "anomaly": 2098
+        }
+      ],
+      "n_events": 109998
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G0",
+      "npz_sha256": "35cf8312a929e2339bff2fc2fdc5cfd223ea0ee56ed5b6e75a4e2152a3febad7",
+      "manifest_sha256": "ac8a0e48f5375290005aba5d6d0e974942c4931a2ab341f03b27683926ea4cef",
+      "fingerprint": "8ef676222e0abbaa62a72366343f16bc25424d10449eb360ec4c63caf8716e61",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 7148
+        },
+        {
+          "normal": 15778,
+          "anomaly": 1753
+        },
+        {
+          "normal": 18886,
+          "anomaly": 2098
+        }
+      ],
+      "n_events": 109998
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G3",
+      "npz_sha256": "a21d1219e286d198ab663ea90881ad686ba88ec80f2197e1ddb2c01493c880c8",
+      "manifest_sha256": "6cc5f0b4aea397bcc99895a8b1482124aba1ca2c4673eace07ae3c31da1fbc85",
+      "fingerprint": "59a103b953da922905caee9fdf90fb0ecbc9a0ff25ea69603b3e7e030f7ff6aa",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 7148
+        },
+        {
+          "normal": 15778,
+          "anomaly": 1753
+        },
+        {
+          "normal": 18886,
+          "anomaly": 2098
+        }
+      ],
+      "n_events": 109998
+    },
+    {
+      "scenario": "window500",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G0",
+      "npz_sha256": "9acf2d4772d80066707a8e0ae77c5970ff99e2a1ac3986589c3d4d5b8d6c06db",
+      "manifest_sha256": "44ddc5f700376648fcc7c43a635b9e7299406d5c887e7220a2c090b6eee80a32",
+      "fingerprint": "a30eac7bebcc947b6cf479e7c7111bb2e44459942ffc7096eb4a6a539bcb6dbf",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window500",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G3",
+      "npz_sha256": "c06bee78f39288d41f724c67f8ea0e5a218f58c7c127db6821cb21b4f58e6523",
+      "manifest_sha256": "f893ea91272856d4ecb5302de72834b44d80b862fdc0d62c53ebb3873d31e7cc",
+      "fingerprint": "5085e96d47260645be9b57e5f812e15d19cba6059240ce41052efe9119273852",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window500",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G0",
+      "npz_sha256": "34fd4bffefbea4e40d095c35de0e8689f8c1d78af21e4db55cf0d852126b002c",
+      "manifest_sha256": "80dae7e1a3e23fdd8d7232919baa1bc667e262540622a08672ada8050d1e81cf",
+      "fingerprint": "e999106d3d5d7ed8a8e783d6aa01cf3a9e9f6d997fad09db96c455ac41ea60db",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window500",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G3",
+      "npz_sha256": "7a6a17f6abde3fe67d1be4dd0ee8d130e328339372dec9e3c5a4c0e8d0139d4e",
+      "manifest_sha256": "d0da80e37108cd73fdba8f1cd122b21d4d203d5c031e56c0598d51ff826f0ba8",
+      "fingerprint": "2f9bf189e2ae588d74b090f6b7d9622b4a36b377d8e1da50c881019ba6e62c79",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window500",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G0",
+      "npz_sha256": "33ebb1ad1f4185608655adff1ac61e2ddc89a7a0d46a783247eede5dafb679c3",
+      "manifest_sha256": "0b0f1ff417955df17fee840b9e52a2abc70bb3c4f3771cd254a9b0535a7a66c7",
+      "fingerprint": "3727e626c4115fdbe01c8ed9835639873d5cd767e7d6194ada0943e53d09a18d",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window500",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G3",
+      "npz_sha256": "599344fafb67e980d126676adfc3f3f39a56d11a8f84f09c999148ab4c37880f",
+      "manifest_sha256": "b637f3b4c82f71d9e05871d89ff14eeac681dccb30cc58d3dd8b82bb3ed9d23b",
+      "fingerprint": "c675dfd5bf03043d8d298f1117f636f8dcaa0c9b9dccc36a2745f393ea9c58e1",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window500",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G0",
+      "npz_sha256": "32565c2d5a9a796a2dd943fd22d1d871a60c3d8a27b8465e032472a8f700a1f8",
+      "manifest_sha256": "05827e68713cca1ecf7c598e87bf82cf5d991686dfbaf7ea2ab90931a7f05667",
+      "fingerprint": "8a016cba6dae1e88ad7758028ecd8799f76a6c917f5a0cd23d3d7f8016e02f85",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window500",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G3",
+      "npz_sha256": "ea15b2e6e78fd26ac2b3257d7f9bc78567a1069f67a72c8e486cbd44fadb41da",
+      "manifest_sha256": "25242eb77b0b447e0ff301dc7a5130d9147e2dae0a278dad7bb06dd74f2442b2",
+      "fingerprint": "43c6d5d1aaf3430b3781a64ea5c1ae276933f1bf7a54a6bd583b34088d771f51",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window500",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G0",
+      "npz_sha256": "d573571b61a521471cd88f410fadc6f7884411a3e1e87e3d1488079052b03586",
+      "manifest_sha256": "8cafb4a96f7e3b948a5c9b5ddd8bfc4b8da75503d8339b72b7d580d45f9f2ca3",
+      "fingerprint": "c6d35d1ffe3ccaf8c6fb0ed436540b15281ffde958fbd7a7431a82cfc53028c2",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window500",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G3",
+      "npz_sha256": "c7c9834310285610db8baebee5645c09b5d9e3e874d3e7ffc3db4b3848f06c7f",
+      "manifest_sha256": "bb56f454eaf5e5fcd729488a6210e54f3adfe22007f1064ffe2b5efe2a32d291",
+      "fingerprint": "5f806c437b8ec5283c5d3217fcfa2acca906f3da1d33e0ebd8081b3ca6f740d7",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G0",
+      "npz_sha256": "ff1efd0e50c49b8a7a838f22f5c43d945dd2db0233346fb733d794e2f3afebbd",
+      "manifest_sha256": "c32fa0e8f35d89066814d89c1fc0650abbdd48d1ff6833f68506dee4fb2f910a",
+      "fingerprint": "1e61f3442d21b4d6f01097c6e7a3b2b806600c432bc0ed9e4f2bf497e19a844c",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G3",
+      "npz_sha256": "059a867efdf8e0751810085aebe9e96270ab57e5072614f1b10772d8aefb61fa",
+      "manifest_sha256": "b98ad934bd85632e0d75f159f8990f51c917141128d93baa4105bc0b83eda7e2",
+      "fingerprint": "855e8f81b2ac1d7696760512856b8d4bad72a08c9b9d7e275c3e9ec96bb907ec",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G0",
+      "npz_sha256": "369a79302c31a9f7329fdf289892d358322e78565d6ca0ae0c504429b0ac4b9f",
+      "manifest_sha256": "a9008c8c1225cad93e1fe808ce025975e3a6bd0d39289f451b3122d7a83ad808",
+      "fingerprint": "e50912a26fe9ec706e4bb13fdcbec6f8786f84c1647686ed3f0f811819c027b0",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G3",
+      "npz_sha256": "e2186723c75a9897158987e0c3f208c0bd4bb2e89f45bf1788fcf58506891ee0",
+      "manifest_sha256": "795c430ad79be9e224fa210dbfd77f74dbcbbad7f31407208292661f5a0c1509",
+      "fingerprint": "f16642977466b005558bceb76fadab05441c6db512afac5605ee41e3fde9543f",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G0",
+      "npz_sha256": "d5ece60c56717003bee8d83aefe01aa69861cee2341c1db6bb89b1cdb0f08c5d",
+      "manifest_sha256": "902dd5354b23346eb576584f3df8d3544e205f507c2d1e7dfd4fd022e444f90a",
+      "fingerprint": "3a6f321ed85b8ba06b877a875587498c14d8ea5d1ac47408e948948b462dfbdc",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G3",
+      "npz_sha256": "c23ee9912d5c0fe18fb3438c5397ddc5f6824be3814db8f78e4e52555928dce1",
+      "manifest_sha256": "1f883dfb3113229f1c49edc9133f42c152cf4d80b0045be0a8fc8f23a3ad7f0a",
+      "fingerprint": "392c9067d23b6c9bdca2f07223cda4e217631b34b2bcb5b355eb97559ef2220c",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G0",
+      "npz_sha256": "f94599a0468f49bb3e7628d85c84dbeec07a03ed5d9d5167a25b8bfadc35848d",
+      "manifest_sha256": "8c8632db2a8025f2941acaa29cd3bf12a11848f14ac880ab59808432588adfc9",
+      "fingerprint": "e6348fe055658347853a537e3d26e1363e4ed9d51d14ece52a41ae744c9697a5",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G3",
+      "npz_sha256": "7b2e596f8ba6dc74584b6f01db073c0a1a3ec4fbc4e9a754ca39c1ee2668b13a",
+      "manifest_sha256": "1b734f74b575d406429cb27f5933fca09b1ae31b50cd78441439c152d0aa2c07",
+      "fingerprint": "69c88911000009c4bf273d54e34b4737bc8f075b8eeae7cbac9fa05e6960a14c",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G0",
+      "npz_sha256": "100c55a6e212f1b2302923f5570422924f18286787616579ecbb759adf3c1418",
+      "manifest_sha256": "7602fc1ac3192d61d42ac578484fce136b1378606295393b303243b6af369174",
+      "fingerprint": "c749f882a946fef145f362b0baa4853b2ffe44b0f3685b6fefe55cc2e94913af",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G3",
+      "npz_sha256": "c527b14c07ffa1fa2195e94d9a78a46cab342979af074893e59c288a2c5fd8ff",
+      "manifest_sha256": "f49a09ac719207f79e870998c9607264edf9f83dd13fee7a71f2e7cd672a6fb3",
+      "fingerprint": "f3bb9f42042f45fae501bf556750d1bd85974437335f7bca0bca18dcee8d2c01",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G0",
+      "npz_sha256": "ba3559a0bb2e8c4ccb2774dc6bcd51129356134a258ea0bc4fa7fa81313decf4",
+      "manifest_sha256": "8e8797b69b60946a13c9b1c2f62df9e16485ade1b6751fb7231042f98ef761f2",
+      "fingerprint": "0eb8d139efcd712ea955fff8cf60de96184b40cbabeb9679072df6e32b0081a1",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "movielens",
+      "seed": 11,
+      "generator": "G3",
+      "npz_sha256": "8300ed6d563f8fd129edd7375944d032943f9afb779e734400170df2ca9a17c9",
+      "manifest_sha256": "6563b04b7d38b14472a29bb5c65d66ee0e1b7be83a327cbb7ec3d8d5239eca74",
+      "fingerprint": "ff5051aae787c45ccfb4556ca32afa7098e6c32bc480876267becfd62f4b18c0",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G0",
+      "npz_sha256": "dfa2eaff46ffa1bb325922f9446e64a0c10a6257df961da2791785029ebe9108",
+      "manifest_sha256": "b4a1463558cb238c7b1d3973e0f17f402e0aa6b1bc8db67ca192139ee11fba96",
+      "fingerprint": "7909cd9f07f091c2e5f3753915f90352feb79a2b8fdd1bc6dfa1de78018ccf69",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "movielens",
+      "seed": 23,
+      "generator": "G3",
+      "npz_sha256": "ba4177884fd595bdbfca1d27c47884f54f84a92962fd1bfd9a61a1c25a6b6096",
+      "manifest_sha256": "c5439a410c2bb12e495acc73243229001f4968a8034c5e576364efa34492d261",
+      "fingerprint": "2a59965ddfe225f8f93d405c0181b8cd889e4dea7ac372b0eebf16403c57306d",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G0",
+      "npz_sha256": "b0db8499b08531bbd142f4163a04c21b853695f8b6c59de62373634bf3179eae",
+      "manifest_sha256": "c79bfbdae87c4942e3967cbd6d7e890177af6ee39ef104abe7e9d307370f2458",
+      "fingerprint": "798c36cab8e44b508eefe1449a88b40ce63bc3e386b8acdd4d489add181b2c53",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "movielens",
+      "seed": 37,
+      "generator": "G3",
+      "npz_sha256": "4c742d6ba754f662fff898ac67133435e314095b12565c6282b41672871653e0",
+      "manifest_sha256": "1ea212ecca7e7c2424a8eb3768f405dd6acc394be46b44cb52e572f40aaa6824",
+      "fingerprint": "cb5d7fd1735b48332f2d6c14360c86912f263601379a24e8256b33ebedbecde2",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G0",
+      "npz_sha256": "9d9ed88bbeeb49c251e8608566ad63a0e869ec5a6ec2d3fb821c8b7f58fb0bb4",
+      "manifest_sha256": "fb073cdbff744694d07fe208282d10aa00d92132cacc68aa52606bab1172ce42",
+      "fingerprint": "b3837f67c9845376af8f43d83d9be71c173d9b3821baaf9cfc0f7337614d15d5",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "movielens",
+      "seed": 51,
+      "generator": "G3",
+      "npz_sha256": "edde60575c8ac31bdea66477a278f73471210e5b7883473db0d74fc8e89d4ad8",
+      "manifest_sha256": "5b49f3878f2325224eac729fafa4e53f5357e3b27da52a62dad1ca7fd0ccb707",
+      "fingerprint": "40e05ad312a12b0e937106525f4462faffcde025fb124e74c1ab6354a937c23f",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G0",
+      "npz_sha256": "b80ce1ec1016320d9cd8aa8a3dae0f2ef6e81949a233c61e11eef9c4f0650542",
+      "manifest_sha256": "b083173f0409825909f79481f646b7af0d39184f7ad07297d2a8a5019f544cf8",
+      "fingerprint": "0dc58fefbce387e21965c8a3d3748e74d6b269624801ab0c582884ba49fc2d6e",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "movielens",
+      "seed": 71,
+      "generator": "G3",
+      "npz_sha256": "37b40635bd25134979ed1e2f4478ce7027dcaed603d5e4b0d5e5a4b5b95441ad",
+      "manifest_sha256": "e22bc4b4a8e3a4a6a19a41defb3364851a251dc879b497ccf7b09b1767d99901",
+      "fingerprint": "895541ed61db9cbc6f527b0b7dfd25dc2335760682333aa8a4239c49262b1615",
+      "split_counts": [
+        {
+          "normal": 64335,
+          "anomaly": 3386
+        },
+        {
+          "normal": 15778,
+          "anomaly": 830
+        },
+        {
+          "normal": 18886,
+          "anomaly": 994
+        }
+      ],
+      "n_events": 104209
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G0",
+      "npz_sha256": "bb5f5be9a063bf1b42d1473c8f405ae0e0e017bd18766db24c4ac1591c37d472",
+      "manifest_sha256": "6a6b083861eb054966cc4037554aef2468f998ef432bccca28a6abf9c16944f5",
+      "fingerprint": "0dac9fb2c4bc05041cbd2fed44f48440ff975aec7c79ea1ab62ac070d375ae3a",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G1",
+      "npz_sha256": "9bacc49d82b09713894f8a66b4a97249b5207e902d945ec23ec9abb926a64a59",
+      "manifest_sha256": "c2473da1adab57b608749639584fdbdeecae310ec2bb934f088a244ab685fee9",
+      "fingerprint": "de9a3eca0d6c49b2e68ee1d70d66bf7307431f89514625d59cdde41f0c362bd6",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G2",
+      "npz_sha256": "b66ec20fe7a7d9308e650b93de5939722eca6572b7c7c07cacf21246cb4f78d9",
+      "manifest_sha256": "824175753101da7d74f6b18b90c522e5280cc48a5a2b511caac763dc9d058776",
+      "fingerprint": "e3d5dde0308c48224d3aa57b8941968c09d4cf3f3c99698bee7ef99dd022c1b3",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G3",
+      "npz_sha256": "4ef93508ca37b5a97362bb8b733cff2b2e31aecf78c3e64e9f65b4df851ffee5",
+      "manifest_sha256": "ab128c4efc0ad7308ddc0cf24ee2a27282d219ed256823f6c55b1d0086639368",
+      "fingerprint": "28c0a4c5276c1e30e0da3030f309e83d20a34e9ef39da38e0cac1930d64130c7",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G0",
+      "npz_sha256": "36fc28e11441756a574fdbd86cb26c782737369286cb7edefec7f9ef9120fda3",
+      "manifest_sha256": "9a20ada21d487269af84d674493b1ebaa0608527175931bc5a46d67f61eb5a32",
+      "fingerprint": "df6304d051f963d603f2638ebe3a7572c742266cb8aefda9fc270d902afe2ced",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G1",
+      "npz_sha256": "973e4ca56d1929fcb8e734975187626c645aa5065755231fb3f9b0ac088e18a3",
+      "manifest_sha256": "752ee7329b473d7a993cc15e9a1b9ea90cec02fc9d940fd5c3d3b5b57651b2cc",
+      "fingerprint": "aedd39d13e5adf3632ead73c0796e5d57484c7f6c3d51abc739fdf677166e4fe",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G2",
+      "npz_sha256": "d7a326fe438adbc095d3dd1c13fcc709051d9f08d83c70267594064653df867a",
+      "manifest_sha256": "86e933467b5d7eaec388511fe0ec3526b3566fb3bf0589cd842d36fda1c59831",
+      "fingerprint": "14a1a7a652395c2ce9431df4eedb41f7c76ccf5e079cd9306883954d90624c0a",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G3",
+      "npz_sha256": "7e13681af354dce08fc626a2b6684854277b1c64b814f92e786f4c7aca03789f",
+      "manifest_sha256": "ac4fd3c69c20b4495f04a90d5150b29aea555e57131e4e2d640e4b2b33c7e880",
+      "fingerprint": "1631b58c75a3e36f03c971e216fe9a7eb767013e674593994f28108c1beffedb",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G0",
+      "npz_sha256": "fa675d7393ce1c049fe782d8747c7d71ce67ba3d692c9e75964637ad1d210265",
+      "manifest_sha256": "2966303dc79ef957c05bcdb0a9b37fc27b1069fd8c062a9a5c0588c6522138ac",
+      "fingerprint": "fe91fd1ba3245e6259b01b92eae8f4e4767161a1cd5f096e397f824919c9d776",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G1",
+      "npz_sha256": "3dd9a80fc7a0aa8d035a1b8548df6a6067208602e198ce65c2ddf30741fc3fc4",
+      "manifest_sha256": "ed77ebb6efc6a27466e8057846e600f27692b6c541e703055b6da297b3d5ba8b",
+      "fingerprint": "f2a9a2e552b9c441a59e406652553d7271bd7735fbf58ca0a29be50ea959c5d1",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G2",
+      "npz_sha256": "d747d6cd3df7dda60e2408845b8c316e5a3cb34adc2159f9f8443cc72b3da127",
+      "manifest_sha256": "4a9729d5847c98aeccad941fd0666f2af66a04027975a7c58041b2e354a17e5c",
+      "fingerprint": "36ef71d75292a82aa865b8d101ebd79e382cb8b542af65d2ef072bbd2b480785",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G3",
+      "npz_sha256": "ff0b4b5986575d3322bbb900d9fce421157d17f1a78da0f14e7fff52f798981a",
+      "manifest_sha256": "d4086402bb8f751e86808de2fb4d7a439163b2b983f9079902d0ec3f0b30de4f",
+      "fingerprint": "c3cb97ee0f9ee407a27503e54f1bb6789d981ba256deb3228bd0724e8e961f5a",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G0",
+      "npz_sha256": "041b8c6023fc0f07d874b02411dc545ab5c5252c98eb3f3460e6fe37331aad94",
+      "manifest_sha256": "b98a5596a94700f9a000777c1731cbf2a69fdf3db5e938a8429bac2304afd008",
+      "fingerprint": "3421f4724d8e1538605a5b3bdc24c628252f350a50c0053b4fa947c5a6e82c59",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G1",
+      "npz_sha256": "3de64007bee7de1030763855fcb591fc327fe3b0da947b3782a6eed3f74479c4",
+      "manifest_sha256": "15a7883804fca78c14cf0a9a0e7b892849ec671542c858e15e38430bc1934853",
+      "fingerprint": "6d2d2f5d6bc6f6ce4777311ecc1c87b01c822272fca661d975daea317df0c3d0",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G2",
+      "npz_sha256": "0292ff184407cb38d81c366106cdf88287f8c3fe7667865b10f08f780b28746b",
+      "manifest_sha256": "2c4d0aaf965795cc35809118b3df59356612e25ad63879090f126e2d991d3b9d",
+      "fingerprint": "5d6bf32f4b760fa6d1c6bcdfbe56a1f98c80bc7de426705980be3511d5c09968",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G3",
+      "npz_sha256": "8f3edfbbae393d32e8537a8eed3c07ab9607f2f0d9a4cd6d7bd72a083d0b546a",
+      "manifest_sha256": "1742eef5626eb49dc8f1704e63c8234e02885febcd5fe47c50d674fd2df7e39d",
+      "fingerprint": "a327ef58811ccaaa419cd6cb0fc2b447e84358b3f4ccbf2bafce554436cd6e3e",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G0",
+      "npz_sha256": "9d9877ad3a19bf6c0ab3d112a2dfc9756ff9eb76346065d4e0a62695357c8125",
+      "manifest_sha256": "45a7a85bb4798a321b6ab3c4f4efb2f858a2f4a4f8db52c19257395edc580613",
+      "fingerprint": "46b01b2b48ea16623359fd52a5ce74a9ee245c1ca1bddd9b86d1dbb921fea18b",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G1",
+      "npz_sha256": "011037933fbf24964b97c80fb9545eea7e964c5948819402ced086665864dd12",
+      "manifest_sha256": "0dce669945ffd816dba09ae4e47166b33a19491b222ae4f97e61ac7b2a2ad70d",
+      "fingerprint": "6ff8a1254bd2776ac753383ca04eaf1bd4561778167f722544ce932d7c3bd69a",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G2",
+      "npz_sha256": "3c60e728032d9ec42ef5031e5ede917612f4def9b1088079e0eb0097f627b9f6",
+      "manifest_sha256": "7cccfb1161dae63b58bbef50f51a6dcc7f060b97686d3cf8c1c0f03041f58c59",
+      "fingerprint": "e5bc5d3179db7db0673e0e76fbc36b71cfb21d6f39638d61bed78e6b6e1efdb3",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "main",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G3",
+      "npz_sha256": "c4384af792e1d0e79bbd751d825a19ea153e2838802f8b0a90eb9c1841ae3ee7",
+      "manifest_sha256": "f57143a23c848d8d3835cdc9871b691115262870ae5cd6504d53312ab34c4767",
+      "fingerprint": "5ed5950df863c891a1148c8e5734349deb658581fc1078407ca3d4e0a80898ba",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G0",
+      "npz_sha256": "f2ea2afa4c9915f17f8fe5686d5ed39d62ed6019ba2bedfef6e6354e397d63a9",
+      "manifest_sha256": "138531d8dc613dbba4a4fee2ecb9e9ea3a833ac9ac499d6e3797407968ce0ed9",
+      "fingerprint": "ba0c8b40641c9a0c4aae579ccdb708d8d70be5deda51ca464bb161059985aacd",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 544
+        },
+        {
+          "normal": 3169,
+          "anomaly": 32
+        },
+        {
+          "normal": 1787,
+          "anomaly": 18
+        }
+      ],
+      "n_events": 59389
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G3",
+      "npz_sha256": "ff6ae440cbf1c6001f18d7730c5a93c0170c595fafaff21c99130020f8aa6885",
+      "manifest_sha256": "efecc732563c3e590ced0d2da5b9f3f8bb0ba566c5332290a44f2de68d052a08",
+      "fingerprint": "81fabbc2b3646dc0818a0fc5bd5948f591e38fd846134359c83e6300b6243a83",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 544
+        },
+        {
+          "normal": 3169,
+          "anomaly": 32
+        },
+        {
+          "normal": 1787,
+          "anomaly": 18
+        }
+      ],
+      "n_events": 59389
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G0",
+      "npz_sha256": "935077048d7becb92d319a8d8c9bf413a4d1ae4d3bd99e948ee2c46ffb6cba6d",
+      "manifest_sha256": "cc33946c544322cfbb8fcf7c8311370f63abc0092c6f7bde4fa92e85212768a3",
+      "fingerprint": "19c620b95ef60e5a5ad357317a68957eaaab4f9f922e9928f5dd5fe3a8f5f21d",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 544
+        },
+        {
+          "normal": 3169,
+          "anomaly": 32
+        },
+        {
+          "normal": 1787,
+          "anomaly": 18
+        }
+      ],
+      "n_events": 59389
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G3",
+      "npz_sha256": "4d3c72ba692291ff86b43b1eb60002dca03dd220544b9aa98b3195d62115061b",
+      "manifest_sha256": "0937bfe00681af08b5004dc7a9cc105e036979cb384fe057c83af5213608478d",
+      "fingerprint": "94905d85f3e62309afec0d4a50fcca685581b433068e7673d7105e589530e075",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 544
+        },
+        {
+          "normal": 3169,
+          "anomaly": 32
+        },
+        {
+          "normal": 1787,
+          "anomaly": 18
+        }
+      ],
+      "n_events": 59389
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G0",
+      "npz_sha256": "00029f4f551035473ea4843c7cf178d31628ca58baa5ba322d71914d0d0b70ee",
+      "manifest_sha256": "f62da3789f708ef5e361f5d9cdddc0b99d5f2bf5217d9ad63ff9f10a7f60760f",
+      "fingerprint": "64b17b70307fc09e4f9112dbfca1682cb9924699f8be0faecae6bc8a6b67b955",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 544
+        },
+        {
+          "normal": 3169,
+          "anomaly": 32
+        },
+        {
+          "normal": 1787,
+          "anomaly": 18
+        }
+      ],
+      "n_events": 59389
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G3",
+      "npz_sha256": "6cd10233b1fdd2f22e21a9b0305e1b7aec554b3c2627da2c6c2e72a78937b06b",
+      "manifest_sha256": "f4b773b7870abc715e05ed0cfbf939bdef38260741aa4de8e051d149a45a9f8e",
+      "fingerprint": "849950076b8c14dc33a6b10f0dbd3da6e751608145708251e8d2c53cf9c7304f",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 544
+        },
+        {
+          "normal": 3169,
+          "anomaly": 32
+        },
+        {
+          "normal": 1787,
+          "anomaly": 18
+        }
+      ],
+      "n_events": 59389
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G0",
+      "npz_sha256": "512152fe921590b6d49e6bc4cd66e23bbc35e23506ecfca834b086b3f4ac048c",
+      "manifest_sha256": "e261c1b38a6dbb069597a9f82f2ddde4f9c3a254642f07ed64ac46a8a800a8db",
+      "fingerprint": "fa578e17ed99e7d2db29e0273a018f2dc5ed24de196b2498333c605f17ce9e74",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 544
+        },
+        {
+          "normal": 3169,
+          "anomaly": 32
+        },
+        {
+          "normal": 1787,
+          "anomaly": 18
+        }
+      ],
+      "n_events": 59389
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G3",
+      "npz_sha256": "72b339832790aae637415f074b50304661c73fa3f6318bdad4a4f728d017aff5",
+      "manifest_sha256": "60f4fd41c691aab6602004ded352ffce530d4d27e38042b70502699dd6e41183",
+      "fingerprint": "59ec6bc506dac1e09eb1af0e203f2eff391958574511019ec5bd6b9673ac20a5",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 544
+        },
+        {
+          "normal": 3169,
+          "anomaly": 32
+        },
+        {
+          "normal": 1787,
+          "anomaly": 18
+        }
+      ],
+      "n_events": 59389
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G0",
+      "npz_sha256": "f7cdbd190c0173e4f35e074c3f83f9014ada06dc2becdd2647e66d6e43747dbf",
+      "manifest_sha256": "4eb042d2e39485eec6143146e12370bd08aa849a2dfafd04a4da00c9eadf0a3b",
+      "fingerprint": "33b4acdce0caca1592e52e987af0abc285edb162c289ac5f645ef4afdcd49705",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 544
+        },
+        {
+          "normal": 3169,
+          "anomaly": 32
+        },
+        {
+          "normal": 1787,
+          "anomaly": 18
+        }
+      ],
+      "n_events": 59389
+    },
+    {
+      "scenario": "ratio01",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G3",
+      "npz_sha256": "95389082cfbe609f33b060d8c6e96ae5d56016938ea53c24640c2e01839a7319",
+      "manifest_sha256": "f194e1c3efdad9838cbd622a5b022b36210929c0638067fc51a5abc34714fe9c",
+      "fingerprint": "85c6a920eb128978be1db6822887056826f2d8090624d667db7c5fadafd2f636",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 544
+        },
+        {
+          "normal": 3169,
+          "anomaly": 32
+        },
+        {
+          "normal": 1787,
+          "anomaly": 18
+        }
+      ],
+      "n_events": 59389
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G0",
+      "npz_sha256": "87a451844a12f32ac2371a41b0d9cc92bef56c6b0eae3554dbcd2834ea4f4bb2",
+      "manifest_sha256": "08b32ae7428f6bd6d653108a5adc6928d807a65e52a802bfe20b47dbc668feb5",
+      "fingerprint": "78480a69add05fbe0e529b95938bf456eb2de8547815e78ac803ec6be49f9561",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 5982
+        },
+        {
+          "normal": 3169,
+          "anomaly": 352
+        },
+        {
+          "normal": 1787,
+          "anomaly": 199
+        }
+      ],
+      "n_events": 65328
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G3",
+      "npz_sha256": "9c61dc68171cce40fd7d3d0adf047463941d5ce06cda9ae0576e2703fc6a18f9",
+      "manifest_sha256": "3cf1b77317f0ce35e23821155b53fe3a4d26998bad26656eef0c387be7216a32",
+      "fingerprint": "f37be41d1769995fd753e4aca4b7aa15d5bf1d3eae31373a9101367c62238554",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 5982
+        },
+        {
+          "normal": 3169,
+          "anomaly": 352
+        },
+        {
+          "normal": 1787,
+          "anomaly": 199
+        }
+      ],
+      "n_events": 65328
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G0",
+      "npz_sha256": "e4c3fbb26aa0fa736770b0b0b874a4b66845c0558341775eeacc77231f176f0b",
+      "manifest_sha256": "5d8d0c6d791872f951c14108fbb6eb6783cf5875a5959ef462bc83a70def1954",
+      "fingerprint": "804daea0df69d1741c21005e6cf278e2b793fcd45e7484272f66351c33a919d9",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 5982
+        },
+        {
+          "normal": 3169,
+          "anomaly": 352
+        },
+        {
+          "normal": 1787,
+          "anomaly": 199
+        }
+      ],
+      "n_events": 65328
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G3",
+      "npz_sha256": "2655058f2587de595ba5c3861abd534885b76ce1fadc12b9eeb931108b11533b",
+      "manifest_sha256": "a97d8ebe985fba1fe12d1fd48fa2a5b333d284288b165fabe9b1d3b0d13f7475",
+      "fingerprint": "1688a55350f057dc5b120c859144024fca208efa628ef5bbc1fcd99e02aeacc4",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 5982
+        },
+        {
+          "normal": 3169,
+          "anomaly": 352
+        },
+        {
+          "normal": 1787,
+          "anomaly": 199
+        }
+      ],
+      "n_events": 65328
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G0",
+      "npz_sha256": "2a308bfce98432909da522aedd97f81b29bf9cdbaf94bca43732904aa0cf5ddd",
+      "manifest_sha256": "0bbf971d57c0b9ca483c56772142d8becf7a7c8cc5a8348e025bd23124eb3173",
+      "fingerprint": "12e035c49aaa19d71fa27b1cbd9968a1c6c137e2baca70d0e825a3c0fda40d9d",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 5982
+        },
+        {
+          "normal": 3169,
+          "anomaly": 352
+        },
+        {
+          "normal": 1787,
+          "anomaly": 199
+        }
+      ],
+      "n_events": 65328
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G3",
+      "npz_sha256": "7c1a6fba1c9f7ac03cc7e68a7239cb79380450c91fa058f96fa2df2c1fc5c492",
+      "manifest_sha256": "48858760c2468e6609280cb256b998387a60068c1b5aae5f8d94d8fddd66a8e4",
+      "fingerprint": "68fc97ad5f0e2d7f6f4578e7cbea10921def0bc37d424db0abae05e2c903fbe5",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 5982
+        },
+        {
+          "normal": 3169,
+          "anomaly": 352
+        },
+        {
+          "normal": 1787,
+          "anomaly": 199
+        }
+      ],
+      "n_events": 65328
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G0",
+      "npz_sha256": "0c489b535d07b68aa5fb280163377081dca79d434f978a2eaf2c041032e7bc27",
+      "manifest_sha256": "e5f5025ac1ddc5eb975affe337715dedaf04368c58d58c8a106a76cf4c0a07ea",
+      "fingerprint": "8d2503573345b23ab8ea059056761d109ff13d3f6ccfde66338f8e7f66189260",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 5982
+        },
+        {
+          "normal": 3169,
+          "anomaly": 352
+        },
+        {
+          "normal": 1787,
+          "anomaly": 199
+        }
+      ],
+      "n_events": 65328
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G3",
+      "npz_sha256": "e0ed6eb8178c954b21638e4473004ef05e597d9564b34d6102808b8599338a1c",
+      "manifest_sha256": "e278165bd35a2ebb77f4fbcc25a6ec2be105fb810832b23f15eb076bc38e7286",
+      "fingerprint": "e8b42d654f155cf6c59738bd610a0ce66653957a35b2209689d820f5c95ae49e",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 5982
+        },
+        {
+          "normal": 3169,
+          "anomaly": 352
+        },
+        {
+          "normal": 1787,
+          "anomaly": 199
+        }
+      ],
+      "n_events": 65328
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G0",
+      "npz_sha256": "bb5ca8505895f663995c785d9b168fd530057287cc4d75f302c5c7c7dc5536a3",
+      "manifest_sha256": "a7d03077ed779d9b10a74a32ed0a07f1cc73c22314dbd0942b50e888081300a2",
+      "fingerprint": "effaa35aadc394231c273e9cf6f0105ad8e01ba6c42db8cc1336a399320a9024",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 5982
+        },
+        {
+          "normal": 3169,
+          "anomaly": 352
+        },
+        {
+          "normal": 1787,
+          "anomaly": 199
+        }
+      ],
+      "n_events": 65328
+    },
+    {
+      "scenario": "ratio10",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G3",
+      "npz_sha256": "71555b95830082191a4f4a1ecaff6f8e82a3c771343f0be54fc75568d8b509e9",
+      "manifest_sha256": "ac09ac3c509795691992c4b9322e1f2cce1315ead01788f901db8f77a0a4af70",
+      "fingerprint": "fa8bdc9651d134d8b71596547f6feab6551e3a140b599c668ebaa928f6ec1d32",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 5982
+        },
+        {
+          "normal": 3169,
+          "anomaly": 352
+        },
+        {
+          "normal": 1787,
+          "anomaly": 199
+        }
+      ],
+      "n_events": 65328
+    },
+    {
+      "scenario": "window500",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G0",
+      "npz_sha256": "7876dcb1f0f0b53c700e7ae958828484ae67e8941ca099f7cfb20369f7ccf6ca",
+      "manifest_sha256": "b91553de445c6e7e0cf13b759793d40a1993e50a58d15768a5c1509eb21014b2",
+      "fingerprint": "3167e6c3ecc8acc62494b731fd8f833a78a77c08153f82ebeb284dbc6988edc7",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window500",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G3",
+      "npz_sha256": "b10682761cf3c6984e663074c301b76c0668e205d6f634246517d1f9b3458af8",
+      "manifest_sha256": "dcf66e6f750a944d3d0abaef921de499523632fffc28910d7be4643bd62c3a17",
+      "fingerprint": "b348a5a00d40ca10685a13a6f46a461178ef401a190064045573d81202aaf707",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window500",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G0",
+      "npz_sha256": "1445e162ce2d4912932542f236df5991fbb39fbd21b73c5f0ba9bb71c2abc6e5",
+      "manifest_sha256": "27e88ad40c9c0bcdf4f3c262074c75100305629a889bbd04e376f08d0925c85c",
+      "fingerprint": "990372c75c6130d0a5484f1a192a2f2f929508c3519d98603315cee454c80476",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window500",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G3",
+      "npz_sha256": "76fa2bd88de76437a25ecc713193952a3683a02c5faad0487657db6df9d83e85",
+      "manifest_sha256": "c4f32e0cb0b9c82f33f981adccc6bb2f1218f429446d13ff678aa8d745759e0c",
+      "fingerprint": "b0b0d9d0e6a1b8ef36f82c5b200f492f1387270df273f6e0118a5883e7eaf4f4",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window500",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G0",
+      "npz_sha256": "b95f2b7a339f9392bdc654cdc94e5caffb01f726103b03071995851cb142de34",
+      "manifest_sha256": "fd5b2d782e9c8293263badda6e458008625c57f5575af48e3445d197bb2b4783",
+      "fingerprint": "e2109079b09c400ab99ac935f6aea483edb57aa79bd9d7b2eb724f3a9d70df3d",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window500",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G3",
+      "npz_sha256": "afda12da98d5fd010a57bbe360636f486ccc13be82a7161cca5c1c9c1b109a05",
+      "manifest_sha256": "24dad4dfe43e1204d4df98ab43e59996490b1812020ea0e5eb1981d88d224b82",
+      "fingerprint": "801e828a393fd710d084d59b716b8eb174aedcb0603ebfcf0fb213b1a6ea5ce0",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window500",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G0",
+      "npz_sha256": "5107fb9741e97d6514fbb506161403b4b9e07013a6d9e3b4fa45b2dbd0a32a1d",
+      "manifest_sha256": "074af2e4bc260b7368d0b026e355faa3a58f71a4411868b9926c9927c64ed9fb",
+      "fingerprint": "114de241d0353d878dfd63c3497b85208fcff81fa0363b5b8ef1014e9489e3f1",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window500",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G3",
+      "npz_sha256": "9937f7671f40ceee6ab5cdd720823b82874ce3db265f53601adc5588e1d28a70",
+      "manifest_sha256": "eeb00a98442f61ed53d12814e99a09015caeccf5bd83790dfc0b5ff0405305dc",
+      "fingerprint": "e8c0bb1d9832ed562fb00439ea042ea3b21e4fe2be676b4c9246f14856e82226",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window500",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G0",
+      "npz_sha256": "5f93c85f9915f93ccf0d9f2ca3ec53eb0f767b84e35c5acd756dfe42181fec10",
+      "manifest_sha256": "19ef9f5dcfa6da917537a1d73a0862a1ca78a38e954c703c9af2bd7f84541e3a",
+      "fingerprint": "17ab4e24cd602b87957e926312ddd237b3b6017a8a9bc6a871bd4529f3e9a7f2",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window500",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G3",
+      "npz_sha256": "305a989f74a0b5f9557d0a582276045cf76a5a40eaf9dc960579c4ca18e38da9",
+      "manifest_sha256": "1d47561648499541fb08f7695c8aa273edfa11b73172cf019fb7936f9927a05f",
+      "fingerprint": "4abed24b5a5a3c449b14d772721628731fc6375614d2b0bb0270121d206bee93",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G0",
+      "npz_sha256": "d2b8690b6c8e441b0f15be93433e59971fe050edbce2396ce049318234c449b5",
+      "manifest_sha256": "f5675f98b62e0dbeffe030ecb939274504a9b7c0f7c8e4e08c7b59b0101a7062",
+      "fingerprint": "a224da2e953d7e61d21eed5acc38b326b0ff23c8376c1df475299fe21c6b28ab",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G3",
+      "npz_sha256": "2f2402f81948a9b1b368cf4183eaf1708aae107885db4e432b9a09d1259ed625",
+      "manifest_sha256": "b76edf953d3faff13439cd0bd724e43df731052587ad4feca31260aa27e6ad9b",
+      "fingerprint": "b6c54709098e4b8d64cc572d503abfada00a2fc987486588d79041973d663997",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G0",
+      "npz_sha256": "5ce3a1cc757824e00fbbfb341ea244489e7359e4a3cf0186299a2d25118c76b0",
+      "manifest_sha256": "384591ffbafe672cd345e3b8e6ca04c0a1187b05ddb5341bcbfa43fa228835de",
+      "fingerprint": "d30d70c08ad06176eafe63bc51df79a070ce583bfbe814b87d0411cafddceac6",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G3",
+      "npz_sha256": "624c94a65a242b0e8549c8572e5abfcd5706cacbcaee27225cc002cf3b4bc54c",
+      "manifest_sha256": "32d6b4f0ae4252fbba280feaf082362044092b809545de09cd9bf8a1410ab846",
+      "fingerprint": "a8e2e7084086b5caa086170e97467a6c8bd800d108e1f9860a14cb30ea214136",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G0",
+      "npz_sha256": "e5a95805c0082f9cf19ca2c32435a3ec611901e3db2703573f34dc2212619d84",
+      "manifest_sha256": "853696d18923570471fb48f8c7e79b621b812ae95d90400c788b9ee85521a505",
+      "fingerprint": "995474168aec7b897a49b2a9ee04c269be576d83cb77c5473a89af925298d176",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G3",
+      "npz_sha256": "2f24b54df2adec673f409e9db4bb4a4712e247855bc790149b845a60c4aaeb9c",
+      "manifest_sha256": "362defc04c8da518cd7b26772398f91ce038a2701411aa20a52a88dd95ad4b3a",
+      "fingerprint": "8ac4542565ca1c9aeabad47aa1a0c5c92a22b30a37838ac404c0bb6d4bc46d87",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G0",
+      "npz_sha256": "c7c0a3a9d33fccdc3ad484feda475645bffae9e31c86f162b25c6b38c114f7b5",
+      "manifest_sha256": "cec7622eae05eefefd280e2609700d4d9218af35b02642a3efe28fbe53bdae99",
+      "fingerprint": "62868ea28c422ae24015056ae2efa3c84af6190d44dbea114d92c818e307d5bc",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G3",
+      "npz_sha256": "9d88c4fe7337c9f32f71ff718e031436d3064aa8c0cd2dc0cf1aa89e9868dc18",
+      "manifest_sha256": "c717b097f62c96a7a94fedad5e93fd2268d8dfdc586dd0a65aa828a69a1c0aaa",
+      "fingerprint": "72401fe97deb7e5e3b870baa2567ddfece166c13eaf9be0f491923d0b13d136f",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G0",
+      "npz_sha256": "8820ab8a215c8c3042db09b38dc9c8847308e85542a1b4ecf953f28f11639177",
+      "manifest_sha256": "4e9d45619862ed4229313d97679cd0fe16067075cdc0a2bbc956f31f327dc21b",
+      "fingerprint": "445718ecfeb3b44fdf5cc2b8bf89a705603fe81fe706d993a87cc1ae2aeb7396",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "window2000",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G3",
+      "npz_sha256": "aa26ef31c890eeb0a273e4eef262ce9d06d4b38ecec2bc80ecdc06bbd25f3f02",
+      "manifest_sha256": "097462efe4a5c0d2f0f3e35f7999908bb128970c865d44d209cc23df0a0a522b",
+      "fingerprint": "54f45e7f13d026758b48412a53b2b491a75a41a0bad62120232d145fb3592126",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G0",
+      "npz_sha256": "6b5baced7f0d5ca3198472c498f23bf50124dd3a87ffeb45e2ad8e664761c76e",
+      "manifest_sha256": "607e7daba0af4d57310595125258e9e286a82ccd3c4a74cb6032359842a40cbb",
+      "fingerprint": "d877aa0751db30ff867e6628a74b0a7e9855895387576cc2e2ddb2b1757045e9",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "ucimessages",
+      "seed": 11,
+      "generator": "G3",
+      "npz_sha256": "443e33637f50ce8702926ef639e3b40e6f9475f63d2911af3ef2247f47e47f98",
+      "manifest_sha256": "db46218764cba1128d00d7d0119c19c9399f397c62852a97e09cac0be12720be",
+      "fingerprint": "9dcbb40feaf1823d7d4f9d938e0924d14c1d1313ed18d9525c5745d5b30deb9b",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G0",
+      "npz_sha256": "328b7fffcd0738aa95aa2496f1f8825e616470bd3f2208031658073db289e084",
+      "manifest_sha256": "e076368528feeeaff167a99f6d098f4a52c9d9f0e1fec330c16d720a0cc6d88c",
+      "fingerprint": "543361560e753ba5352b96aaf1b692a1bdb61d1ae8990f487e431dc3b0fb8638",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "ucimessages",
+      "seed": 23,
+      "generator": "G3",
+      "npz_sha256": "eb6656ba13fd6a4032bc2f33588fe6be92ad2d182b7c9eecf7dc4dc4fab98ba0",
+      "manifest_sha256": "528c0265c8d00cfa71f427c530c39ecc580e8f7205d15af9f33223fafbc0c8ad",
+      "fingerprint": "cb78830eb21a03a7eebd3b28f275d5ae925f3ecff112b52d47ad68e74709df4e",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G0",
+      "npz_sha256": "78a4e03aadb637c66b5e1dda75b154d462992956657ec4c67ad5cbf3940f71ac",
+      "manifest_sha256": "c1b6dd48a6db5566b424130e234b9e43064a35c7c91a6b5506d1f67a6e9c1e01",
+      "fingerprint": "6a4e0422d6147e52acd8e60aba87ba2c9783077995442b1746ee7d7ccb8d27e1",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "ucimessages",
+      "seed": 37,
+      "generator": "G3",
+      "npz_sha256": "c12f65aa635adb7f4c3e5e6bebc5901f147ed60605935316bb2ee2684134f139",
+      "manifest_sha256": "04059c5ab80a2a792fefec08d721d2a2a089d9e8f15ba462e13faa2e009f99b6",
+      "fingerprint": "46a09dfb7c265bbfadd7c04a1d1d8cba0ecef93dfe57143d39f8cdebdb1bb96e",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G0",
+      "npz_sha256": "8519341635e028df3104118b2b94ab521b03a310dbafd80789c7be076ba71e65",
+      "manifest_sha256": "7f9bdbc8a873813a4ebe0c65faa11af88f1f46e5b889a90334ee4264898322ad",
+      "fingerprint": "f9c421b86cde999a79dd48d95e5f3b26c9a1636f78f75f3adc56a7f24f54a28c",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "ucimessages",
+      "seed": 51,
+      "generator": "G3",
+      "npz_sha256": "2b35f1495a25b6bfb6c575e78ab16f86d2875f7ad276746b52feb90c375ee76c",
+      "manifest_sha256": "fc70e190c854968480d6946ce9b9cdce43e276d3f6bb925adc7f1be2dccf6edc",
+      "fingerprint": "49984481f5c4b235063dbaae32f868992d317e86368176729063f118138a7838",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G0",
+      "npz_sha256": "2c946bbebc35ba461d28f048492b8b5b4033ec256e9278ac5e8d0531c088ce8c",
+      "manifest_sha256": "7b6d31458f2dce9288801bef0ce0834af9af463690b8c9220665004e1148562e",
+      "fingerprint": "12648553c793f20b3fab13ce07b05094a5fb11e5bdac8c20651d8e04cd2a837c",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    },
+    {
+      "scenario": "past_only",
+      "dataset": "ucimessages",
+      "seed": 71,
+      "generator": "G3",
+      "npz_sha256": "8c352a977725d07162af7137318a70649098b9bc110129828e4242585cb082bf",
+      "manifest_sha256": "10d999775408689045bb9ff7b49fc8bdf16a7749430856ce0ca7fcf76f048e77",
+      "fingerprint": "1bc78d826e68540a19d839238dd0dd87f3d8a1c75974c0651ae095701f7c8cf5",
+      "split_counts": [
+        {
+          "normal": 53839,
+          "anomaly": 2834
+        },
+        {
+          "normal": 3169,
+          "anomaly": 167
+        },
+        {
+          "normal": 1787,
+          "anomaly": 94
+        }
+      ],
+      "n_events": 61890
+    }
+  ],
+  "optional_model_checksums": [],
+  "check_notes": [
+    "No model fitting occurs. At most one feature cache and one optional estimator are resident.",
+    "All main and novel-normal metrics are recomputed independently of graphbench.evaluate.compute_metrics.",
+    "Legality is checked against independently remapped original data, including warmup, full/past absence, unique injections, partitions, quotas and observed-event preservation.",
+    "Timestamp lineage arrays and audit logs are checked; all feature vectors are not regenerated from scratch.",
+    "Configuration/source/cache/model provenance fingerprints are checked. Serialized estimator rescoring is optional; main_audit.json already documents all360 main estimators.",
+    "No-pair models were intentionally not persisted; their fixed source-selected parameters, feature omission, prediction hashes and metrics are verified.",
+    "Resolved pilot failures remain in history and never enter successful-run counts."
+  ]
+}

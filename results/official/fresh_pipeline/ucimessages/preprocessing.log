@@ -1,0 +1,51 @@
+timestamp
+1082008561    1
+1082123439    1
+1082381991    1
+1082407219    1
+1082407356    1
+             ..
+1098744248    1
+1098744436    1
+1098744603    1
+1098744711    1
+1098744742    1
+Length: 58911, dtype: int64
+Total number of days: 193.0
+Total different timestamps: 58911
+DataFrame is sorted by 'u' and 'v'.
+DataFrame is sorted by 'timestamp'.
+No self-loops found.
+Duplicate rows:
+        timestamp    u    v
+965    1082846205   97  228
+966    1082846205   97  228
+2126   1083031338  260  338
+2127   1083031338  260  338
+5293   1083367240  308  398
+...           ...  ...  ...
+59602  1097939561    3  372
+59608  1097939561    3  372
+59604  1097939561    3  800
+59606  1097939561    3  800
+59607  1097939561    3  800
+
+[79 rows x 3 columns]
+
+DataFrame without duplicates:
+        timestamp     u     v
+0      1082008561     1     2
+1      1082123439     3     4
+2      1082381991     2     5
+3      1082407219     6     7
+4      1082407356     7     8
+...           ...   ...   ...
+59830  1098744248  1847  1899
+59831  1098744436  1097  1899
+59832  1098744603   277  1899
+59833  1098744711  1624  1878
+59834  1098744742  1624  1878
+
+[59795 rows x 3 columns]
+DataFrame is sorted by 'u' and 'v'.
+DataFrame is sorted by 'timestamp'.

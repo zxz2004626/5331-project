@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "scenario": "main",
+  "dataset": "movielens",
+  "seed": 71,
+  "source_generator": "G0",
+  "model": "RF",
+  "features": "local",
+  "feature_names": [
+    "path3_count",
+    "path3_normalized"
+  ],
+  "n_jobs": 2,
+  "source_cache_fingerprint": "e6a456d73dcd717fef71042633b0860d20e6ce1e2fc41f08d0eda1b7cdbad58a",
+  "evaluation_source_sha256": "5124aded4ded84ac3a59903cf44aa1a5005d0ed88cc517ed533eb4b755f17309",
+  "python_version": "3.11.4",
+  "numpy_version": "1.24.3",
+  "sklearn_version": "1.3.0",
+  "status": "complete",
+  "run_id": "movielens_seed71_G0_RF_local_to_G0",
+  "run_fingerprint": "62191b61cdd8caa3e33bb66d3d0ab94e3f47d48ed2c7aaa0a63cb31bda8fa327",
+  "model_fingerprint": "32e637fa575db2ac6796d0fe8cce35ae2787b851054f5daf26a8e145238c1ff8",
+  "target_generator": "G0",
+  "target_cache_fingerprint": "e6a456d73dcd717fef71042633b0860d20e6ce1e2fc41f08d0eda1b7cdbad58a",
+  "n_train": 67721,
+  "n_val": 16608,
+  "n_test": 19880,
+  "params": {
+    "n_estimators": 100,
+    "class_weight": "balanced_subsample",
+    "n_jobs": 2,
+    "min_samples_leaf": 1,
+    "random_state": 71
+  },
+  "selected_validation_average_precision": 0.11706449540466866,
+  "metrics": {
+    "average_precision": 0.1187870728905153,
+    "pr_auc_trapezoid": 0.5562817562232898,
+    "roc_auc": 0.8034916317773206,
+    "precision_at_k": 0.08350100603621731,
+    "recall_at_k": 0.08350100603621731,
+    "k": 994,
+    "true_positives_at_k": 83,
+    "n": 19880,
+    "n_anomalies": 994,
+    "anomaly_fraction": 0.05
+  },
+  "novel_normal_metrics": {
+    "average_precision": 0.1187870728905153,
+    "pr_auc_trapezoid": 0.5562817562232898,
+    "roc_auc": 0.8034916317773206,
+    "precision_at_k": 0.08350100603621731,
+    "recall_at_k": 0.08350100603621731,
+    "k": 994,
+    "true_positives_at_k": 83,
+    "n": 19880,
+    "n_anomalies": 994,
+    "anomaly_fraction": 0.05
+  },
+  "novel_normal_status": "complete",
+  "normal_previously_seen_fraction": 0.0,
+  "times": {
+    "selection_seconds": 4.442884600022808,
+    "refit_seconds": 3.881229199934751,
+    "evaluation_seconds": 0.22542209993116558
+  },
+  "prediction_file": "results\\evaluation\\main\\predictions\\movielens_seed71_G0_RF_local_to_G0.npz",
+  "model_metadata_file": "results\\evaluation\\main\\models\\movielens_seed71_G0_RF_local.json",
+  "tie_breaking": "ascending preserved target-cache row index",
+  "feature_importance_impurity": {
+    "path3_count": 0.5363830288512818,
+    "path3_normalized": 0.4636169711487183
+  }
+}

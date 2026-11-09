@@ -1,0 +1,21 @@
+timestamp
+874724710    1
+874724727    1
+874724754    1
+874724781    1
+874724843    1
+            ..
+893286550    3
+893286584    1
+893286603    1
+893286637    3
+893286638    7
+Length: 49282, dtype: int64
+Total number of days: 214.0
+Total different timestamps: 49282
+DataFrame is sorted by 'u' and 'v'.
+DataFrame is sorted by 'timestamp'.
+No self-loops found.
+No duplicates found.
+DataFrame is sorted by 'u' and 'v'.
+DataFrame is sorted by 'timestamp'.

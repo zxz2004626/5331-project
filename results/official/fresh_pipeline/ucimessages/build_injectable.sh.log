@@ -1,0 +1,12 @@
+number of triplets to sample : 11959 (20 % of 59795)
+building timestamp and node sets
+sampling 11959 random triplets
+raw sampling performed
+removing loops, duplicates, etc
+removing the ones existing in the original file
+done: built 11954 injectable triplets for "ucimessages" (from 11959).
+
+[stderr]
+sample 11959 items in a set of 58911
+sample 11959 items in a set of 1899
+sample 11959 items in a set of 1899

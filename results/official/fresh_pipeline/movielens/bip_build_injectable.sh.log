@@ -1,0 +1,12 @@
+number of triplets to sample : 20000 (20 % of 100000)
+building timestamp and node sets
+sampling 20000 random triplets
+raw sampling performed
+removing loops, duplicates, etc
+removing the ones existing in the original file
+done: built 20000 injectable triplets for "movielens" (from 20000).
+
+[stderr]
+sample 20000 items in a set of 49282
+sample 20000 items in a set of 1682
+sample 20000 items in a set of 943

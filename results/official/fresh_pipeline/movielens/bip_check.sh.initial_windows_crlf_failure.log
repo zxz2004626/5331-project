@@ -1,0 +1,8 @@
+105000 lines
+100000 zeroes
+5000 ones
+checking temporal order
+PROBLEM!!! bad temporal ordering
+
+[stderr]
+sort: -:12: disorder: 874725081

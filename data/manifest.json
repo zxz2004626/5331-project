@@ -1,0 +1,52 @@
+[
+  {
+    "dataset": "movielens",
+    "source_path": "vendor\\TGF\\1-PreprocessingOfDatasets\\BipartiteNetworks\\movielens\\movielens.txt",
+    "source_url": "https://github.com/StephanyRajeh/TGF/blob/af9d575e07c7bc3fd0b4a0b8d0249e7cdd2eb88b/1-PreprocessingOfDatasets/BipartiteNetworks/movielens/movielens.txt",
+    "sha256": "ce7408206b026ccf2d5fed6fe56bee566328e9b0299d1d24f5dbb9bed3189aa8",
+    "n_observed": 100000,
+    "n_nodes": 2625,
+    "n_unique_pairs": 100000,
+    "n_timestamps": 49282,
+    "bipartite": true,
+    "partition": 1682,
+    "left_partition": "movies",
+    "right_partition": "users",
+    "first_timestamp": 874724710,
+    "last_timestamp": 893286638,
+    "split_boundaries": [
+      885861866.8,
+      889574252.4
+    ],
+    "split_observed_counts_before_warmup": [
+      65336,
+      15778,
+      18886
+    ]
+  },
+  {
+    "dataset": "ucimessages",
+    "source_path": "vendor\\TGF\\1-PreprocessingOfDatasets\\UnipartiteNetworks\\opsahl-ucsocial\\ucimessages.txt",
+    "source_url": "https://github.com/StephanyRajeh/TGF/blob/af9d575e07c7bc3fd0b4a0b8d0249e7cdd2eb88b/1-PreprocessingOfDatasets/UnipartiteNetworks/opsahl-ucsocial/ucimessages.txt",
+    "sha256": "df88c51f3ebe44388ddb896c2ad37abcb781f8d21005d23454cfee97600e93b0",
+    "n_observed": 59795,
+    "n_nodes": 1899,
+    "n_unique_pairs": 13838,
+    "n_timestamps": 58911,
+    "bipartite": false,
+    "partition": null,
+    "left_partition": null,
+    "right_partition": null,
+    "first_timestamp": 1082008561,
+    "last_timestamp": 1098744742,
+    "split_boundaries": [
+      1092050269.6,
+      1095397505.8
+    ],
+    "split_observed_counts_before_warmup": [
+      54839,
+      3169,
+      1787
+    ]
+  }
+]

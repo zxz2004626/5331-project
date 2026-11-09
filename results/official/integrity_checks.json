@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "prediction_files_checked": 20,
+  "prediction_rows_checked": 497350,
+  "metrics_recomputed": [
+    "roc_auc",
+    "average_precision"
+  ],
+  "absolute_tolerance": 1e-12,
+  "checks": [
+    "exactly 5 RF seeds per dataset/protocol",
+    "finite bounded scores",
+    "same test labels and row indices across paired protocols",
+    "same complete matrix labels/row indices/columns",
+    "all prior-timestamp matrix values finite"
+  ]
+}

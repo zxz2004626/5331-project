@@ -1,0 +1,7 @@
+{
+  "status": "failed_then_fixed",
+  "stage": "initial_uncounted_pilot",
+  "jobs": ["main/ucimessages/11/G0", "main/ucimessages/11/G3"],
+  "error": "NumPy bool_ in audit JSON was not serializable; feature cache written but no complete manifest",
+  "resolution": "Cast audit flag to Python bool and regenerate; incomplete caches never eligible for evaluation"
+}

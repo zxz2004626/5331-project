@@ -1,0 +1,76 @@
+{
+  "status": "passed",
+  "artifact": "output\\pdf\\experiment_report.pdf",
+  "sha256": "f438bdd702dfda6773261170d77636f48a6f1f527d9375704cbed1d09c557128",
+  "verified_at_utc": "2026-09-28T22:04:23.768756+00:00",
+  "page_count": 13,
+  "bytes": 1508658,
+  "render_engine": "Bundled Poppler pdftoppm",
+  "render_dpi": 110,
+  "rendered_pages": 13,
+  "visual_review_pages": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+  ],
+  "individual_dense_page_reviews": [
+    2,
+    5,
+    8,
+    9,
+    10,
+    11,
+    13
+  ],
+  "latest_changed_page_individually_rechecked": 11,
+  "layout_checks": {
+    "no_clipped_text": true,
+    "no_table_overflow": true,
+    "no_overlapping_elements": true,
+    "all_figures_present_and_legible": true,
+    "headers_footers_page_numbers_consistent": true,
+    "no_missing_glyph_boxes_observed": true
+  },
+  "data_checks": {
+    "main_evaluations": 840,
+    "sensitivity_evaluations": 200,
+    "no_pair_evaluations": 40,
+    "official_timing_evaluations": 20,
+    "numeric_table_cells_verified_against_csv": 48,
+    "all_page_labels_verified": true,
+    "all_extracted_pages_nonempty": true
+  },
+  "science_checks": [
+    "AP distinguished from trapezoidal PR-AUC and classification accuracy",
+    "5-seed sample SD scope explicit",
+    "finite-pool 128-to-16-to-4 approximate matching limitation stated",
+    "full-stream pair-exclusion oracle and strict causal features distinguished",
+    "official current-event inclusion not called label leakage",
+    "fixed elapsed-time sparse UCI test limitation stated",
+    "novel-normal changed class prior reported",
+    "UCI prior-pair removal full vs novel-subset interpretation included",
+    "no real-fraud or perfect-structure-preservation claim"
+  ],
+  "render_warnings": "Poppler reported inaccessible Bulgarian/Greek/Thai nameToUnicode optional lookup paths under Unicode Windows home. Exit code 0; all English pages rendered and visually checked without glyph defects.",
+  "builder": "scripts/build_pdf_report.py",
+  "input_figures": [
+    "cross_generator_LR.png",
+    "cross_generator_RF.png",
+    "feature_ablation.png",
+    "feature_distributions_seed11.png",
+    "feature_importance.png",
+    "generator_diagnostics.png",
+    "main_average_precision.png",
+    "sensitivity.png"
+  ]
+}

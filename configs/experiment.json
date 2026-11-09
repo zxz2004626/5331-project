@@ -1,0 +1,21 @@
+{
+  "protocol_version": "1.0",
+  "official_commit": "af9d575e07c7bc3fd0b4a0b8d0249e7cdd2eb88b",
+  "datasets": ["movielens", "ucimessages"],
+  "seeds": [11, 23, 37, 51, 71],
+  "generators": ["G0", "G1", "G2", "G3"],
+  "split": {"kind": "elapsed_time", "fractions": [0.6, 0.2, 0.2]},
+  "history": {"kind": "last_events", "window": 1000, "recent_seconds": 86400, "update": "mixed_timestamp_batched", "warmup_observed_events": 1000},
+  "injection": {"anomaly_fraction": 0.05, "absence": "global", "unique_injected_pairs": true, "legal_candidate_pool": 128, "endpoint_keep": 16, "local_keep": 4, "max_draws": 100000, "matching": "fixed_ranked_candidate_thinning", "node_universe": "full_observed_stream"},
+  "scenarios": {
+    "main": {},
+    "ratio01": {"anomaly_fraction": 0.01},
+    "ratio10": {"anomaly_fraction": 0.10},
+    "window500": {"window": 500},
+    "window2000": {"window": 2000},
+    "past_only": {"absence": "past"}
+  },
+  "primary_metric": "average_precision",
+  "secondary_metrics": ["pr_auc_trapezoid", "roc_auc", "precision_at_k", "recall_at_k"],
+  "notes": ["Fixed rank thinning is approximate matching, not a hard caliper guarantee.", "Full-stream pair exclusions and node universe are benchmark oracle information, never feature history.", "Test results do not select generator parameters."]
+}

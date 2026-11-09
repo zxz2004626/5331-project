@@ -1,0 +1,20 @@
+{
+  "post_update_rows_checked_exactly": 61784,
+  "generation_plus_post_update_verification_seconds": 4.854952100198716,
+  "absent_value_convention": "value=0, same count=0, greater count=active population size",
+  "history": "Last 1000 rows with timestamp strictly earlier than the candidate; score all equal-timestamp candidates before adding any of them.",
+  "held_fixed": [
+    "official injected stream",
+    "row order",
+    "warmup 1000",
+    "chronological70/30",
+    "training indices",
+    "RF parameters and seeds"
+  ],
+  "split_boundary_timestamps": [
+    1085923635,
+    1085923774
+  ],
+  "split_boundary_shares_timestamp": false,
+  "scope": "Strict timestamp-causal extraction contrast only; official injection uses full-stream node and timestamp universe. Original row split retained, potentially sharing a timestamp at boundary."
+}

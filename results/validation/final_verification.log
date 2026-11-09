@@ -1,0 +1,25 @@
+CHECKED caches=10/140 predictions=220/1080 errors=0
+CHECKED caches=20/140 predictions=440/1080 errors=0
+CHECKED caches=30/140 predictions=460/1080 errors=0
+CHECKED caches=40/140 predictions=480/1080 errors=0
+CHECKED caches=50/140 predictions=500/1080 errors=0
+CHECKED caches=60/140 predictions=520/1080 errors=0
+CHECKED caches=70/140 predictions=540/1080 errors=0
+CHECKED caches=80/140 predictions=760/1080 errors=0
+CHECKED caches=90/140 predictions=980/1080 errors=0
+CHECKED caches=100/140 predictions=1000/1080 errors=0
+CHECKED caches=110/140 predictions=1020/1080 errors=0
+CHECKED caches=120/140 predictions=1040/1080 errors=0
+CHECKED caches=130/140 predictions=1060/1080 errors=0
+CHECKED caches=140/140 predictions=1080/1080 errors=0
+{
+  "status": "passed",
+  "verified_evaluations": 1080,
+  "verified_caches": 140,
+  "verified_model_metadata": 560,
+  "csv_rows_checked": 1080,
+  "summary_groups_checked": 208,
+  "max_absolute_metric_error": 3.3306690738754696e-16,
+  "elapsed_seconds": 255.0668387999758,
+  "errors": []
+}
