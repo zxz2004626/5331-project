@@ -3,10 +3,10 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "comp5331-graphbench"
+name = "comp5331-graph-anomaly"
 version = "0.1.0"
 description = "Structure- and time-aware synthetic graph anomaly evaluation"
-readme = "README.txt"
+readme = "README.md"
 requires-python = ">=3.10,<3.12"
 dynamic = ["dependencies"]
 
@@ -14,7 +14,7 @@ dynamic = ["dependencies"]
 dev = ["pytest==7.4.0", "ruff==0.17.4"]
 
 [project.scripts]
-graphbench = "graphbench.cli:main"
+graph-anomaly = "graph_anomaly.cli:main"
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
@@ -32,8 +32,3 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I"]
-
-[tool.ruff.lint.per-file-ignores]
-"scripts/*.py" = ["E402"]
-"src/graphbench/workflows/*.py" = ["E402"]
-"src/graphbench/evaluation.py" = ["F401"]

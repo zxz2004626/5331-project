@@ -1,8 +1,4 @@
-"""Run unchanged upstream TGF H1000 feature generator and classical notebook cells.
-
-Usage: python scripts/official_reproduction.py [--dataset movielens|ucimessages|all]
-No upstream file is modified. All outputs go to results/official.
-"""
+"""Pinned TGF preparation, baseline reproduction, and timing controls."""
 
 from __future__ import annotations
 
@@ -34,15 +30,94 @@ from sklearn.metrics import (
     roc_auc_score,
 )
 
-from graphbench.paths import ROOT
-from graphbench.shell import find_bash, injection_command
+from .config import ROOT
+
+
+def find_bash() -> str:
+    configured = os.environ.get("GRAPH_ANOMALY_BASH")
+    if configured:
+        executable = shutil.which(configured) or configured
+        if not Path(executable).is_file():
+            raise FileNotFoundError(f"GRAPH_ANOMALY_BASH does not exist: {configured}")
+        return str(executable)
+    if os.name == "nt":
+        # Prefer Git's Bash over the Windows/WSL launcher named bash.exe.
+        git = shutil.which("git")
+        candidates = []
+        if git:
+            install = Path(git).resolve().parent.parent
+            candidates += [install / "bin/bash.exe", install / "usr/bin/bash.exe"]
+        for variable in ("ProgramFiles", "LOCALAPPDATA"):
+            if os.environ.get(variable):
+                candidates.append(
+                    Path(os.environ[variable])
+                    / (
+                        "Programs/Git/bin/bash.exe"
+                        if variable == "LOCALAPPDATA"
+                        else "Git/bin/bash.exe"
+                    )
+                )
+        for candidate in candidates:
+            if candidate.is_file():
+                return str(candidate)
+    else:
+        executable = shutil.which("bash")
+        if executable:
+            return executable
+    raise FileNotFoundError(
+        "Bash is required only for official --fresh-pipeline. Install Git Bash (Windows) or bash/gzip/coreutils (Unix), or set GRAPH_ANOMALY_BASH."
+    )
+
+
+def injection_command(bash, python, script, dataset, percentage):
+    # All user paths travel through argv; the shell program contains no interpolation.
+    launcher = 'interpreter="$1"; export interpreter; shift; python3() { set -o pipefail; "$interpreter" "$@" | tr -d "\\r"; }; export -f python3; bash "$@"'
+    return [
+        str(bash),
+        "-c",
+        launcher,
+        "official-injection",
+        Path(python).as_posix(),
+        script,
+        dataset,
+        percentage,
+    ]
+
+
+REV = "af9d575e07c7bc3fd0b4a0b8d0249e7cdd2eb88b"
+
+TARGET = ROOT / "vendor/TGF"
+
+
+def prepare_main():
+    argparse.ArgumentParser(description=__doc__).parse_args()
+    if not shutil.which("git"):
+        raise FileNotFoundError("Git is required for prepare. Install Git and add it to PATH.")
+    if not TARGET.exists():
+        TARGET.parent.mkdir(exist_ok=True)
+        subprocess.run(
+            ["git", "clone", "https://github.com/StephanyRajeh/TGF.git", str(TARGET)], check=True
+        )
+        subprocess.run(["git", "-C", str(TARGET), "checkout", "--detach", REV], check=True)
+    rev = subprocess.check_output(
+        ["git", "-C", str(TARGET), "rev-parse", "HEAD"], text=True
+    ).strip()
+    if rev != REV:
+        raise RuntimeError(
+            f"Existing upstream is {rev}, expected {REV}. Preserve its changes and select the pinned revision explicitly."
+        )
+    print(f"Verified upstream {rev}")
+
 
 UPSTREAM = ROOT / "vendor" / "TGF"
+
 OUT = ROOT / "results" / "official"
+
 CONFIG = {
     "movielens": ("Bipartite", "MovieLens", "MovieLens-5Perc-H1000.ipynb"),
     "ucimessages": ("Unipartite", "UCIMessages", "UCIMessages-5Perc-H1000.ipynb"),
 }
+
 SEEDS = [42, 0, 1, 2, 3]
 
 
@@ -89,75 +164,14 @@ def read_cached(path):
     return [json.loads(line) for line in payload.decode(encoding).splitlines()], encoding
 
 
-def run_dataset(dataset):
-    OUT.mkdir(parents=True, exist_ok=True)
-    kind, title, notebook_name = CONFIG[dataset]
-    injected = UPSTREAM / "2-Injection" / kind / dataset / f"{dataset}_5_injected.gz"
-    notebook_dir = UPSTREAM / "4-LearningAndTesting" / "HTypeHistoryGraphs" / kind / title
-    notebook_path = notebook_dir / notebook_name
-    generated_path = OUT / f"{dataset}_5_injected_H1000_regenerated.json.gz"
-    print(f"[{dataset}] generating upstream features", flush=True)
-    data, generation_seconds, command = generate_features(dataset, injected, generated_path)
-    cached, encoding = read_cached(notebook_dir / f"{dataset}_5_injected_H1000.json.gz")
-    mismatch_count, first_mismatch = 0, None
-    for i, (a, b) in enumerate(zip(data, cached)):
-        aa, bb = (
-            {k: v for k, v in a.items() if k != "cost"},
-            {k: v for k, v in b.items() if k != "cost"},
-        )
-        if aa != bb:
-            mismatch_count += 1
-            if first_mismatch is None:
-                first_mismatch = {
-                    "row": i,
-                    "fields": {
-                        k: [aa.get(k), bb.get(k)]
-                        for k in aa.keys() | bb.keys()
-                        if aa.get(k) != bb.get(k)
-                    },
-                }
-    assert len(data) == len(cached), "Regenerated/cached row counts differ"
-    print(f"[{dataset}] {len(data)} rows generated; cache mismatches={mismatch_count}", flush=True)
-
-    spec = importlib.util.spec_from_file_location(
-        f"official_utilities_{dataset}", notebook_dir / "utilitiesMe.py"
-    )
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    nb = json.loads(notebook_path.read_text(encoding="utf8"))
-    env = {
-        "pd": pd,
-        "np": np,
-        "data": data,
-        "flatten_dict": mod.flatten_dict,
-        "RandomForestClassifier": RandomForestClassifier,
-        "roc_auc_score": roc_auc_score,
-    }
-    # Execute literal upstream cell source. Import/load/plot/display-only cells are replaced
-    # by an explicit local environment; upstream pandas 1.5 append is available here.
-    executed = [8, 11, 13, 17, 20, 22, 25, 31, 35, 36, 42, 43, 47, 49]
-    log = io.StringIO()
-    start = time.perf_counter()
-    with contextlib.redirect_stdout(log):
-        for i in executed:
-            exec(
-                compile("".join(nb["cells"][i]["source"]), f"{notebook_path.name}:cell{i}", "exec"),
-                env,
-            )
-    learning_seconds = time.perf_counter() - start
-    (OUT / f"{dataset}_notebook_classical.log").write_text(log.getvalue(), encoding="utf8")
-    df, x_train, y_train, x_test, y_test = [
-        env[k] for k in ["df", "X_train", "y_train", "X_test", "y_test"]
-    ]
-    assert "is_fraud" not in x_train.columns
-    assert set(x_train.index).isdisjoint(x_test.index)
-    assert max(x_train.index) < min(x_test.index)
+def _evaluate_official_seeds(dataset, x_train, y_train, x_test, y_test, env, learning_seconds):
+    """Evaluate the official RF seeds on the unchanged chronological test rows."""
     rows = []
     feature_importances = []
     for seed in SEEDS:
         print(f"[{dataset}] RF seed {seed}", flush=True)
         if seed == 42:
-            rf, fit_seconds = env["rf_classifier"], learning_seconds
+            rf, fit_seconds = (env["rf_classifier"], learning_seconds)
         else:
             start = time.perf_counter()
             rf = RandomForestClassifier(random_state=seed).fit(x_train, y_train)
@@ -195,6 +209,87 @@ def run_dataset(dataset):
             y=y_test.values,
             score=score,
         )
+    return (rows, feature_importances)
+
+
+def _execute_official_notebook(dataset, notebook_dir, notebook_path, data):
+    """Execute the specified upstream learning cells and preserve their console output."""
+    spec = importlib.util.spec_from_file_location(
+        f"official_utilities_{dataset}", notebook_dir / "utilitiesMe.py"
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    nb = json.loads(notebook_path.read_text(encoding="utf8"))
+    env = {
+        "pd": pd,
+        "np": np,
+        "data": data,
+        "flatten_dict": mod.flatten_dict,
+        "RandomForestClassifier": RandomForestClassifier,
+        "roc_auc_score": roc_auc_score,
+    }
+    executed = [8, 11, 13, 17, 20, 22, 25, 31, 35, 36, 42, 43, 47, 49]
+    log = io.StringIO()
+    start = time.perf_counter()
+    with contextlib.redirect_stdout(log):
+        for i in executed:
+            exec(
+                compile("".join(nb["cells"][i]["source"]), f"{notebook_path.name}:cell{i}", "exec"),
+                env,
+            )
+    learning_seconds = time.perf_counter() - start
+    (OUT / f"{dataset}_notebook_classical.log").write_text(log.getvalue(), encoding="utf8")
+    return (env, learning_seconds, executed)
+
+
+def _compare_official_features(data, cached, dataset):
+    """Compare regenerated and released feature records, excluding computation cost."""
+    mismatch_count, first_mismatch = (0, None)
+    for i, (a, b) in enumerate(zip(data, cached)):
+        aa, bb = (
+            {k: v for k, v in a.items() if k != "cost"},
+            {k: v for k, v in b.items() if k != "cost"},
+        )
+        if aa != bb:
+            mismatch_count += 1
+            if first_mismatch is None:
+                first_mismatch = {
+                    "row": i,
+                    "fields": {
+                        k: [aa.get(k), bb.get(k)]
+                        for k in aa.keys() | bb.keys()
+                        if aa.get(k) != bb.get(k)
+                    },
+                }
+    assert len(data) == len(cached), "Regenerated/cached row counts differ"
+    print(f"[{dataset}] {len(data)} rows generated; cache mismatches={mismatch_count}", flush=True)
+    return (mismatch_count, first_mismatch)
+
+
+def run_dataset(dataset):
+    OUT.mkdir(parents=True, exist_ok=True)
+    kind, title, notebook_name = CONFIG[dataset]
+    injected = UPSTREAM / "2-Injection" / kind / dataset / f"{dataset}_5_injected.gz"
+    notebook_dir = UPSTREAM / "4-LearningAndTesting" / "HTypeHistoryGraphs" / kind / title
+    notebook_path = notebook_dir / notebook_name
+    generated_path = OUT / f"{dataset}_5_injected_H1000_regenerated.json.gz"
+    print(f"[{dataset}] generating upstream features", flush=True)
+    data, generation_seconds, command = generate_features(dataset, injected, generated_path)
+    cached, encoding = read_cached(notebook_dir / f"{dataset}_5_injected_H1000.json.gz")
+    mismatch_count, first_mismatch = _compare_official_features(data, cached, dataset)
+
+    env, learning_seconds, executed = _execute_official_notebook(
+        dataset, notebook_dir, notebook_path, data
+    )
+    df, x_train, y_train, x_test, y_test = [
+        env[k] for k in ["df", "X_train", "y_train", "X_test", "y_test"]
+    ]
+    assert "is_fraud" not in x_train.columns
+    assert set(x_train.index).isdisjoint(x_test.index)
+    assert max(x_train.index) < min(x_test.index)
+    rows, feature_importances = _evaluate_official_seeds(
+        dataset, x_train, y_train, x_test, y_test, env, learning_seconds
+    )
     pd.DataFrame(rows).to_csv(OUT / f"{dataset}_metrics.csv", index=False)
     pd.DataFrame(feature_importances).to_csv(OUT / f"{dataset}_feature_importance.csv", index=False)
     # Preserve complete row-aligned matrices for a paired causal comparison.
@@ -302,86 +397,8 @@ def snapshot_causal_features(env, u, v, bip):
     return out
 
 
-def run_paired_timing(dataset):
-    """Hold stream, row split, training samples, RF fixed; vary current-event inclusion."""
-    print(f"[{dataset}] paired timing contrast", flush=True)
-    kind = CONFIG[dataset][0]
-    injected = UPSTREAM / "2-Injection" / kind / dataset / f"{dataset}_5_injected.gz"
-    reference = np.load(OUT / f"{dataset}_official_matrix.npz")
-    # Cache once: NpzFile.__getitem__ decompresses a member on every access.
-    reference_x = reference["X"]
-    columns = list(reference["columns"])
-    env = {}
-    feature_dir = UPSTREAM / "3-FeatureGeneration"
-    source = (feature_dir / "main.py").read_text(encoding="utf8")
-    # The upstream initialization/functions are executed verbatim, without its IO loop.
-    # This wrapper calls those same arrival/departure functions in the original order.
-    prefix = source.split("# process input links one by one")[0]
-    saved_argv, saved_path = sys.argv[:], sys.path[:]
-    try:
-        sys.argv = ["main.py", "-H", "1000"] + (["-bip"] if dataset == "movielens" else [])
-        sys.path.insert(0, str(feature_dir))
-        exec(compile(prefix, str(feature_dir / "main.py"), "exec"), env)
-    finally:
-        sys.argv, sys.path[:] = saved_argv, saved_path
-    matrix = np.empty_like(reference_x)
-    n_checked = 0
-    start = time.perf_counter()
-    timestamps = []
-    with gzip.open(injected, "rt", encoding="utf8") as f:
-        for timestamp, group_iter in itertools.groupby(
-            enumerate(f), key=lambda item: int(item[1].split()[0])
-        ):
-            group = []
-            for i, line in group_iter:
-                t, u, v, label = line.split()
-                t = int(t)
-                if dataset != "movielens":
-                    u, v = min(u, v), max(u, v)
-                group.append((i, t, u, v))
-                # Freeze all rows in a timestamp group before inserting any group row.
-                if i >= 1000:
-                    before = snapshot_causal_features(env, u, v, dataset == "movielens")
-                    matrix[i - 1000] = [before[c] for c in columns]
-                    timestamps.append(t)
-            for i, t, u, v in group:
-                env["link_arrival"](t, u, v)
-                while len(env["Q"]) > 1000:
-                    env["link_departure"](*env["Q"].popleft())
-                if i >= 1000:
-                    after = snapshot_causal_features(env, u, v, dataset == "movielens")
-                    actual = np.asarray([after[c] for c in columns])
-                    if not np.array_equal(actual, reference_x[i - 1000]):
-                        raise AssertionError(
-                            f"Post-update verification mismatch at row {i}: "
-                            + str(
-                                {
-                                    c: (actual[j], reference_x[i - 1000, j])
-                                    for j, c in enumerate(columns)
-                                    if actual[j] != reference_x[i - 1000, j]
-                                }
-                            )
-                        )
-                    n_checked += 1
-    generation_seconds = time.perf_counter() - start
-    assert n_checked == len(matrix)
-    np.savez_compressed(
-        OUT / f"{dataset}_pre_update_matrix.npz",
-        X=matrix,
-        y=reference["y"],
-        row_index=reference["row_index"],
-        columns=reference["columns"],
-    )
-    df = pd.DataFrame(matrix, columns=columns, index=reference["row_index"])
-    df["is_fraud"] = reference["y"]
-    split = round(len(df) / 100 * 70)
-    train, test = df.iloc[:split], df.iloc[split:]
-    positives = train[train.is_fraud == 1]
-    balanced = pd.concat(
-        [train[train.is_fraud == 0].sample(n=len(positives), random_state=12), positives]
-    ).sample(frac=1, random_state=42)
-    x_train, y_train = balanced.drop(columns="is_fraud"), balanced.is_fraud
-    x_test, y_test = test.drop(columns="is_fraud"), test.is_fraud
+def _evaluate_paired_seeds(dataset, x_train, y_train, x_test, y_test):
+    """Fit the fixed RF settings on strict pre-arrival features."""
     rows = []
     for seed in SEEDS:
         start = time.perf_counter()
@@ -408,6 +425,101 @@ def run_paired_timing(dataset):
             y=y_test.values,
             score=score,
         )
+    return rows
+
+
+def _paired_feature_matrix(dataset, injected, reference_x, columns, env):
+    """Batch equal-time feature extraction and verify the original post-arrival matrix."""
+    matrix = np.empty_like(reference_x)
+    n_checked = 0
+    start = time.perf_counter()
+    timestamps = []
+    with gzip.open(injected, "rt", encoding="utf8") as f:
+        for timestamp, group_iter in itertools.groupby(
+            enumerate(f), key=lambda item: int(item[1].split()[0])
+        ):
+            group = []
+            for i, line in group_iter:
+                t, u, v, label = line.split()
+                t = int(t)
+                if dataset != "movielens":
+                    u, v = (min(u, v), max(u, v))
+                group.append((i, t, u, v))
+                if i >= 1000:
+                    before = snapshot_causal_features(env, u, v, dataset == "movielens")
+                    matrix[i - 1000] = [before[c] for c in columns]
+                    timestamps.append(t)
+            for i, t, u, v in group:
+                env["link_arrival"](t, u, v)
+                while len(env["Q"]) > 1000:
+                    env["link_departure"](*env["Q"].popleft())
+                if i >= 1000:
+                    after = snapshot_causal_features(env, u, v, dataset == "movielens")
+                    actual = np.asarray([after[c] for c in columns])
+                    if not np.array_equal(actual, reference_x[i - 1000]):
+                        raise AssertionError(
+                            f"Post-update verification mismatch at row {i}: "
+                            + str(
+                                {
+                                    c: (actual[j], reference_x[i - 1000, j])
+                                    for j, c in enumerate(columns)
+                                    if actual[j] != reference_x[i - 1000, j]
+                                }
+                            )
+                        )
+                    n_checked += 1
+    generation_seconds = time.perf_counter() - start
+    assert n_checked == len(matrix)
+    return (matrix, n_checked, timestamps, generation_seconds)
+
+
+def _initialize_upstream_history(dataset):
+    """Initialize upstream history functions without executing the original input loop."""
+    env = {}
+    feature_dir = UPSTREAM / "3-FeatureGeneration"
+    source = (feature_dir / "main.py").read_text(encoding="utf8")
+    prefix = source.split("# process input links one by one")[0]
+    saved_argv, saved_path = (sys.argv[:], sys.path[:])
+    try:
+        sys.argv = ["main.py", "-H", "1000"] + (["-bip"] if dataset == "movielens" else [])
+        sys.path.insert(0, str(feature_dir))
+        exec(compile(prefix, str(feature_dir / "main.py"), "exec"), env)
+    finally:
+        sys.argv, sys.path[:] = (saved_argv, saved_path)
+    return env
+
+
+def run_paired_timing(dataset):
+    """Hold stream, row split, training samples, RF fixed; vary current-event inclusion."""
+    print(f"[{dataset}] paired timing contrast", flush=True)
+    kind = CONFIG[dataset][0]
+    injected = UPSTREAM / "2-Injection" / kind / dataset / f"{dataset}_5_injected.gz"
+    reference = np.load(OUT / f"{dataset}_official_matrix.npz")
+    # Cache once: NpzFile.__getitem__ decompresses a member on every access.
+    reference_x = reference["X"]
+    columns = list(reference["columns"])
+    env = _initialize_upstream_history(dataset)
+    matrix, n_checked, timestamps, generation_seconds = _paired_feature_matrix(
+        dataset, injected, reference_x, columns, env
+    )
+    np.savez_compressed(
+        OUT / f"{dataset}_pre_update_matrix.npz",
+        X=matrix,
+        y=reference["y"],
+        row_index=reference["row_index"],
+        columns=reference["columns"],
+    )
+    df = pd.DataFrame(matrix, columns=columns, index=reference["row_index"])
+    df["is_fraud"] = reference["y"]
+    split = round(len(df) / 100 * 70)
+    train, test = df.iloc[:split], df.iloc[split:]
+    positives = train[train.is_fraud == 1]
+    balanced = pd.concat(
+        [train[train.is_fraud == 0].sample(n=len(positives), random_state=12), positives]
+    ).sample(frac=1, random_state=42)
+    x_train, y_train = balanced.drop(columns="is_fraud"), balanced.is_fraud
+    x_test, y_test = test.drop(columns="is_fraud"), test.is_fraud
+    rows = _evaluate_paired_seeds(dataset, x_train, y_train, x_test, y_test)
     pd.DataFrame(rows).to_csv(OUT / f"{dataset}_paired_timing_metrics.csv", index=False)
     (OUT / f"{dataset}_paired_timing_metadata.json").write_text(
         json.dumps(
@@ -436,6 +548,71 @@ def run_paired_timing(dataset):
         f"[{dataset}] paired timing complete: AUC={rows[0]['roc_auc']:.6f}, AP={rows[0]['average_precision']:.6f}",
         flush=True,
     )
+
+
+def _check_fresh_injection(dest, dataset, actual):
+    """Validate counts, ordering, pair legality, and preservation of all observed records."""
+    with gzip.open(dest / f"{dataset}_5_injected.gz", "rt") as f:
+        events = [tuple(line.split()) for line in f]
+    normals = [x[:3] for x in events if x[3] == "0"]
+    injected = [x[:3] for x in events if x[3] == "1"]
+    assert len(normals) == len(actual) and set(normals) == set(actual)
+    assert len(injected) == len(actual) * 5 // 100
+    assert len(set((x[:3] for x in events))) == len(events)
+    assert all((int(events[i][0]) <= int(events[i + 1][0]) for i in range(len(events) - 1)))
+    assert all((x[1] != x[2] for x in events))
+    assert not set(injected) & set(actual)
+    if dataset == "movielens":
+        assert all((x[1].startswith("bottom_") and x[2].startswith("top_") for x in events))
+    return (events, normals, injected)
+
+
+def _run_original_injection_scripts(dest, build, check, dataset):
+    """Run exact upstream Git blobs and retain each script console log."""
+    source_hashes = {}
+    for filename in [build, "inject.sh", check, "random_sample.py"]:
+        blob = subprocess.check_output(
+            ["git", "-C", str(UPSTREAM), "show", f"HEAD:2-Injection/{filename}"]
+        )
+        (dest / filename).write_bytes(blob)
+        source_hashes[filename] = hashlib.sha256(blob).hexdigest()
+    commands, logs = ([], [])
+    bash = find_bash()
+    for script, pct in [(build, "20"), ("inject.sh", "5"), (check, "5")]:
+        command = injection_command(bash, sys.executable, script, dataset, pct)
+        run = subprocess.run(
+            command, cwd=dest, capture_output=True, text=True, encoding="utf8", errors="replace"
+        )
+        text = run.stdout + "\n[stderr]\n" + run.stderr
+        (dest / f"{script}.log").write_text(text, encoding="utf8")
+        if run.returncode != 0 or "PROBLEM!!!" in text:
+            raise RuntimeError(f"Official {script} failed: {text}")
+        commands.append(
+            {"script": script, "arguments": [dataset, pct], "returncode": run.returncode}
+        )
+        logs.append(text)
+    assert "everything seems ok" in logs[-1]
+    return (source_hashes, commands)
+
+
+def _run_preprocessing_notebook(pre, notebook_name, dest):
+    """Execute raw-data cleaning in the isolated dataset output directory."""
+    notebook = json.loads((pre / notebook_name).read_text(encoding="utf8"))
+    executed = []
+    log = io.StringIO()
+    cwd = Path.cwd()
+    try:
+        os.chdir(dest)
+        env = {}
+        with contextlib.redirect_stdout(log):
+            for i, cell in enumerate(notebook["cells"]):
+                if cell["cell_type"] == "code":
+                    exec(compile("".join(cell["source"]), f"{notebook_name}:cell{i}", "exec"), env)
+                    executed.append(i)
+    finally:
+        os.chdir(cwd)
+    (dest / "preprocessing.log").write_text(log.getvalue(), encoding="utf8")
+    return executed
 
 
 def run_fresh_preprocessing_injection(dataset):
@@ -468,21 +645,7 @@ def run_fresh_preprocessing_injection(dataset):
     if prior_check_log.exists() and "PROBLEM!!!" in prior_check_log.read_text(encoding="utf8"):
         shutil.copyfile(prior_check_log, dest / f"{check}.initial_windows_crlf_failure.log")
     shutil.copyfile(pre / raw_name, dest / raw_name)
-    notebook = json.loads((pre / notebook_name).read_text(encoding="utf8"))
-    executed = []
-    log = io.StringIO()
-    cwd = Path.cwd()
-    try:
-        os.chdir(dest)
-        env = {}
-        with contextlib.redirect_stdout(log):
-            for i, cell in enumerate(notebook["cells"]):
-                if cell["cell_type"] == "code":
-                    exec(compile("".join(cell["source"]), f"{notebook_name}:cell{i}", "exec"), env)
-                    executed.append(i)
-    finally:
-        os.chdir(cwd)
-    (dest / "preprocessing.log").write_text(log.getvalue(), encoding="utf8")
+    executed = _run_preprocessing_notebook(pre, notebook_name, dest)
     cleaned = dest / f"{dataset}.txt"
     upstream_cleaned = pre / f"{dataset}.txt"
     actual = [tuple(line.split()) for line in cleaned.read_text(encoding="utf-8").splitlines()]
@@ -492,41 +655,8 @@ def run_fresh_preprocessing_injection(dataset):
     assert actual == expected, "Fresh original preprocessing differs from committed cleaned rows"
     with gzip.open(dest / f"{dataset}.gz", "wb") as f:
         f.write(cleaned.read_bytes())
-    source_hashes = {}
-    for filename in [build, "inject.sh", check, "random_sample.py"]:
-        blob = subprocess.check_output(
-            ["git", "-C", str(UPSTREAM), "show", f"HEAD:2-Injection/{filename}"]
-        )
-        (dest / filename).write_bytes(blob)
-        source_hashes[filename] = hashlib.sha256(blob).hexdigest()
-    commands, logs = [], []
-    bash = find_bash()
-    for script, pct in [(build, "20"), ("inject.sh", "5"), (check, "5")]:
-        command = injection_command(bash, sys.executable, script, dataset, pct)
-        run = subprocess.run(
-            command, cwd=dest, capture_output=True, text=True, encoding="utf8", errors="replace"
-        )
-        text = run.stdout + "\n[stderr]\n" + run.stderr
-        (dest / f"{script}.log").write_text(text, encoding="utf8")
-        if run.returncode != 0 or "PROBLEM!!!" in text:
-            raise RuntimeError(f"Official {script} failed: {text}")
-        commands.append(
-            {"script": script, "arguments": [dataset, pct], "returncode": run.returncode}
-        )
-        logs.append(text)
-    assert "everything seems ok" in logs[-1]
-    with gzip.open(dest / f"{dataset}_5_injected.gz", "rt") as f:
-        events = [tuple(line.split()) for line in f]
-    normals = [x[:3] for x in events if x[3] == "0"]
-    injected = [x[:3] for x in events if x[3] == "1"]
-    assert len(normals) == len(actual) and set(normals) == set(actual)
-    assert len(injected) == len(actual) * 5 // 100
-    assert len(set(x[:3] for x in events)) == len(events)
-    assert all(int(events[i][0]) <= int(events[i + 1][0]) for i in range(len(events) - 1))
-    assert all(x[1] != x[2] for x in events)
-    assert not (set(injected) & set(actual))
-    if dataset == "movielens":
-        assert all(x[1].startswith("bottom_") and x[2].startswith("top_") for x in events)
+    source_hashes, commands = _run_original_injection_scripts(dest, build, check, dataset)
+    events, normals, injected = _check_fresh_injection(dest, dataset, actual)
     metadata = {
         "dataset": dataset,
         "upstream_commit": subprocess.check_output(
@@ -689,7 +819,3 @@ def main():
         pd.concat([merged, paired], ignore_index=True).groupby(["dataset", "protocol"])[
             ["roc_auc", "average_precision", "precision_at_1pct"]
         ].agg(["mean", "std"]).to_csv(OUT / "paired_timing_summary.csv")
-
-
-if __name__ == "__main__":
-    main()

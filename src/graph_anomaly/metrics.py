@@ -1,4 +1,4 @@
-"""Anomaly-positive ranking metrics with deterministic treatment of ties."""
+"""Metrics."""
 
 from __future__ import annotations
 

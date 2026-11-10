@@ -1,53 +1,295 @@
-"""Regenerate publication-style plots, tables and Chinese results text from saved runs."""
+"""Aggregate experiment records and generate numerical tables and figures."""
+
+from __future__ import annotations
 
 import argparse
 import json
+from collections import defaultdict
+from pathlib import Path
+from typing import Any
 
-import matplotlib
 import numpy as np
 import pandas as pd
 
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
+from .artifacts import (
+    _canonical,
+    _digest,
+    _file_hash,
+    _read_json,
+    _write_csv,
+    artifact_path,
+    evaluation_code_hash,
+)
+from .config import ROOT
 
-from graphbench.paths import ROOT
-from graphbench.result_inputs import load_diagnostics
+
+def _flatten_record(record: dict[str, Any]) -> dict[str, Any]:
+    fields = [
+        "scenario",
+        "dataset",
+        "seed",
+        "source_generator",
+        "target_generator",
+        "model",
+        "features",
+        "n_train",
+        "n_val",
+        "n_test",
+        "run_id",
+        "selected_validation_average_precision",
+        "normal_previously_seen_fraction",
+    ]
+    row = {key: record.get(key) for key in fields}
+    row.update(record["metrics"])
+    row.update(
+        {f"novel_{key}": value for key, value in (record.get("novel_normal_metrics") or {}).items()}
+    )
+    row.update(record.get("times", {}))
+    row["params"] = _canonical(record["params"])
+    return row
+
+
+def aggregate_results(output: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Rebuild tables, excluding successful but now-invalidated old records."""
+    output = Path(output)
+    root = output.parents[2]
+    source_hash = evaluation_code_hash()
+    cache_fingerprints: dict[Path, str | None] = {}
+
+    def current_cache_fingerprint(record: dict[str, Any], generator: str) -> str | None:
+        path = (
+            root
+            / "results"
+            / "cache"
+            / record["scenario"]
+            / record["dataset"]
+            / f"seed_{record['seed']}"
+            / f"{generator}.npz"
+        )
+        if path not in cache_fingerprints:
+            metadata_path = path.with_suffix(".json")
+            metadata = _read_json(metadata_path)
+            cache_fingerprints[path] = (
+                _digest(
+                    {"npz_sha256": _file_hash(path), "metadata_sha256": _file_hash(metadata_path)}
+                )
+                if path.exists() and metadata and metadata.get("status") == "complete"
+                else None
+            )
+        return cache_fingerprints[path]
+
+    records = []
+    for path in sorted((output / "runs").glob("*.json")):
+        record = _read_json(path)
+        if not record or record.get("status") != "complete":
+            continue
+        if record.get("evaluation_source_sha256") != source_hash:
+            continue
+        if record.get("source_cache_fingerprint") != current_cache_fingerprint(
+            record, record["source_generator"]
+        ) or record.get("target_cache_fingerprint") != current_cache_fingerprint(
+            record, record["target_generator"]
+        ):
+            continue
+        model_metadata = _read_json(artifact_path(root, record["model_metadata_file"]))
+        if (
+            not model_metadata
+            or model_metadata.get("model_fingerprint") != record.get("model_fingerprint")
+            or not artifact_path(root, record["prediction_file"]).exists()
+        ):
+            continue
+        records.append(record)
+    rows = [_flatten_record(record) for record in records]
+    if not rows and any((output / "runs").glob("*.json")):
+        raise ValueError(
+            "No run matches the current source and available artifacts. "
+            "Existing summary tables were preserved. Rebuild in a separate checkout "
+            "or use graph_anomaly summarize to read the saved historical results."
+        )
+    _write_csv(output / "metrics.csv", rows)
+    dimensions = [
+        "scenario",
+        "dataset",
+        "source_generator",
+        "target_generator",
+        "model",
+        "features",
+    ]
+    groups = defaultdict(list)
+    for row in rows:
+        groups[tuple(row[key] for key in dimensions)].append(row)
+    summary = []
+    metrics = [
+        "average_precision",
+        "pr_auc_trapezoid",
+        "roc_auc",
+        "precision_at_k",
+        "recall_at_k",
+        "anomaly_fraction",
+        "novel_average_precision",
+        "novel_roc_auc",
+        "novel_precision_at_k",
+        "normal_previously_seen_fraction",
+    ]
+    for key, group in sorted(groups.items()):
+        row = dict(zip(dimensions, key))
+        row["n_seeds"] = len(group)
+        row["seeds"] = ";".join(
+            str(item["seed"]) for item in sorted(group, key=lambda v: v["seed"])
+        )
+        for metric in metrics:
+            values = [item[metric] for item in group if item.get(metric) is not None]
+            row[f"{metric}_mean"] = float(np.mean(values)) if values else None
+            row[f"{metric}_std"] = float(np.std(values, ddof=1)) if len(values) > 1 else None
+        summary.append(row)
+    _write_csv(output / "summary.csv", summary)
+    return rows, summary
+
+
+def load_split_counts(root: Path, dataset: str):
+    """Read fresh metadata, or the same counts recorded in the historical audit."""
+    manifest = root / f"results/cache/main/{dataset}/seed_11/G0.json"
+    if manifest.is_file():
+        return json.loads(manifest.read_text(encoding="utf-8"))["split_counts"]
+    audit = json.loads((root / "results/validation/final_audit.json").read_text(encoding="utf-8"))
+    matches = [
+        row
+        for row in audit["cache_checksums_and_counts"]
+        if row["scenario"] == "main"
+        and row["dataset"] == dataset
+        and row["seed"] == 11
+        and row["generator"] == "G0"
+    ]
+    if len(matches) != 1:
+        raise ValueError(f"Expected one audited split-count record for {dataset}")
+    return matches[0]["split_counts"]
+
+
+def load_diagnostics(root: Path):
+    """Prefer complete cache diagnostics; otherwise read checked-in summaries.
+
+    Summary reuse supports moving a results-only checkout. It never claims that
+    event-level diagnostics were recomputed without their source feature caches.
+    """
+    import pandas as pd
+
+    from .config import DATASETS, GENERATORS, SEEDS
+
+    manifests = [
+        root / f"results/cache/main/{d}/seed_{seed}/{g}.json"
+        for d in DATASETS
+        for seed in SEEDS
+        for g in GENERATORS
+    ]
+    if not all(path.exists() for path in manifests):
+        tables = root / "results/report/tables"
+        print("Using saved diagnostic summaries; generator caches are not complete.")
+        return (
+            pd.read_csv(tables / "diagnostic_group_statistics.csv"),
+            pd.read_csv(tables / "matching_statistics.csv"),
+        )
+    rows = []
+    match = []
+    endpoint = ["u_degree", "v_degree", "u_weighted_degree", "v_weighted_degree"]
+    temporal = [
+        "u_recent_count",
+        "v_recent_count",
+        "u_recency_log",
+        "v_recency_log",
+        "u_active",
+        "v_active",
+    ]
+    for d in DATASETS:
+        for seed in [11, 23, 37, 51, 71]:
+            for g in GENERATORS:
+                p = root / f"results/cache/main/{d}/seed_{seed}/{g}"
+                meta = json.loads(p.with_suffix(".json").read_text(encoding="utf-8"))
+                x = pd.read_csv(p.parent / f"{g}_diagnostics.csv")
+                for name, features in [
+                    ("endpoint", endpoint),
+                    ("local", meta["feature_groups"]["local"]),
+                    ("temporal", temporal),
+                    ("prior_pair", ["pair_seen_before"]),
+                ]:
+                    z = x[(x.split == 2) & x.feature.isin(features)]
+                    rows.append(
+                        {
+                            "dataset": d,
+                            "generator": g,
+                            "seed": seed,
+                            "group": name,
+                            "mean_ks": z.ks.mean(),
+                            "mean_abs_smd": z.smd.abs().mean(),
+                            "mean_wasserstein_normal_std": z.wasserstein_normal_std.mean(),
+                        }
+                    )
+                match.append(
+                    {
+                        "dataset": d,
+                        "generator": g,
+                        "seed": seed,
+                        **meta["matching_mean_distances"],
+                        "endpoint_distance_over_log2_fraction": meta[
+                            "endpoint_distance_over_log2_fraction"
+                        ],
+                        "candidate_draws": meta["candidate_draws"],
+                        "legal_acceptance": sum(
+                            __import__("gzip")
+                            .open(p.parent / f"{g}_audit.jsonl.gz", "rt")
+                            .read()
+                            .count('"candidate_pool_size":' + str(i))
+                            * i
+                            for i in [1, 128]
+                        )
+                        / meta["candidate_draws"],
+                    }
+                )
+    diag = pd.DataFrame(rows)
+    return diag, pd.DataFrame(match)
+
 
 OUT = ROOT / "results/report"
+
 FIG = OUT / "figures"
+
 TABLE = OUT / "tables"
+
 DS = ["movielens", "ucimessages"]
+
 GEN = ["G0", "G1", "G2", "G3"]
+
 LABEL = {"movielens": "MovieLens 100K", "ucimessages": "UCI Messages"}
+
 COLORS = ["#67757b", "#377eb8", "#e69536", "#bb4b53"]
-plt.rcParams.update(
-    {
-        "font.family": "DejaVu Sans",
-        "font.size": 10,
-        "axes.spines.top": False,
-        "axes.spines.right": False,
-        "figure.dpi": 130,
-        "savefig.dpi": 200,
-    }
-)
+
+
+plt = None
+
+
+def _configure_plotting():
+    """Load the noninteractive plotting backend only for the summarize command."""
+    global plt
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    plt.rcParams.update(
+        {
+            "font.family": "DejaVu Sans",
+            "font.size": 10,
+            "axes.spines.top": False,
+            "axes.spines.right": False,
+            "figure.dpi": 130,
+            "savefig.dpi": 200,
+        }
+    )
 
 
 def save(fig, name):
     fig.savefig(FIG / f"{name}.png", bbox_inches="tight")
     fig.savefig(FIG / f"{name}.pdf", bbox_inches="tight")
     plt.close(fig)
-
-
-def mdtable(frame):
-    f = frame.fillna("").astype(str)
-    return (
-        "| "
-        + " | ".join(f.columns)
-        + " |\n| "
-        + " | ".join(["---"] * len(f.columns))
-        + " |\n"
-        + "\n".join("| " + " | ".join(row) + " |" for row in f.values.tolist())
-    )
 
 
 def meanstd(values, digits=3):
@@ -70,30 +312,8 @@ def load_frames():
     return main, pd.concat(sensitivities, ignore_index=True)
 
 
-def make_tables(main, sens):
-    diagonal = main[main.source_generator == main.target_generator]
-    core = diagonal[diagonal.features.isin(["tgf", "extended"])]
-    rows = []
-    for d in DS:
-        for g in GEN:
-            r = {"Dataset": LABEL[d], "Generator": g}
-            for m in ["RF", "LR"]:
-                for f in ["tgf", "extended"]:
-                    x = core[
-                        (core.dataset == d)
-                        & (core.source_generator == g)
-                        & (core.model == m)
-                        & (core.features == f)
-                    ]
-                    assert len(x) == 5
-                    r[f"{m}-{f}"] = meanstd(x.average_precision)
-            rows.append(r)
-    primary = pd.DataFrame(rows)
-    primary.to_csv(TABLE / "main_ap.csv", index=False)
-    metric_table = core.groupby(["dataset", "source_generator", "model", "features"])[
-        ["average_precision", "pr_auc_trapezoid", "roc_auc", "precision_at_k", "recall_at_k"]
-    ].agg(["mean", "std"])
-    metric_table.to_csv(TABLE / "main_all_metrics.csv")
+def _paired_difference_tables(core):
+    """Write paired generator and feature differences without changing seed alignment."""
     paired = []
     for d in DS:
         for m in ["RF", "LR"]:
@@ -131,6 +351,34 @@ def make_tables(main, sens):
             }
         )
     pd.DataFrame(additions).to_csv(TABLE / "paired_feature_differences.csv", index=False)
+    return paired
+
+
+def make_tables(main, sens):
+    diagonal = main[main.source_generator == main.target_generator]
+    core = diagonal[diagonal.features.isin(["tgf", "extended"])]
+    rows = []
+    for d in DS:
+        for g in GEN:
+            r = {"Dataset": LABEL[d], "Generator": g}
+            for m in ["RF", "LR"]:
+                for f in ["tgf", "extended"]:
+                    x = core[
+                        (core.dataset == d)
+                        & (core.source_generator == g)
+                        & (core.model == m)
+                        & (core.features == f)
+                    ]
+                    assert len(x) == 5
+                    r[f"{m}-{f}"] = meanstd(x.average_precision)
+            rows.append(r)
+    primary = pd.DataFrame(rows)
+    primary.to_csv(TABLE / "main_ap.csv", index=False)
+    metric_table = core.groupby(["dataset", "source_generator", "model", "features"])[
+        ["average_precision", "pr_auc_trapezoid", "roc_auc", "precision_at_k", "recall_at_k"]
+    ].agg(["mean", "std"])
+    metric_table.to_csv(TABLE / "main_all_metrics.csv")
+    paired = _paired_difference_tables(core)
     sen = sens.groupby(["scenario", "dataset", "source_generator", "features"])[
         ["average_precision", "roc_auc", "anomaly_fraction"]
     ].agg(["mean", "std"])
@@ -424,6 +672,7 @@ def importance_fig(main):
 
 def main():
     argparse.ArgumentParser(description=__doc__).parse_args()
+    _configure_plotting()
     FIG.mkdir(parents=True, exist_ok=True)
     TABLE.mkdir(parents=True, exist_ok=True)
     main, sens = load_frames()
@@ -465,7 +714,3 @@ def main():
             }
         )
     )
-
-
-if __name__ == "__main__":
-    main()

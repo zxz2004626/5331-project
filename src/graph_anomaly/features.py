@@ -1,9 +1,4 @@
-"""Causal sliding-history graph features with timestamp-batched updates.
-
-Call ``advance(t)``, score every event at timestamp t, then ``add`` that
-timestamp's observed (including injected) events.  Extraction never inserts an
-edge.  Dense integer IDs refer to a fixed vocabulary, not an active population.
-"""
+"""Strict pre-arrival graph history and interpretable feature groups."""
 
 from __future__ import annotations
 
@@ -25,6 +20,8 @@ _NODE_GLOBALS = (
     "weighted_degrees_max",
     "weighted_degrees_median",
 )
+
+
 _ENDPOINTS = (
     "u_degree",
     "v_degree",
@@ -39,6 +36,8 @@ _ENDPOINTS = (
     "u_greater_weighted_degree",
     "v_greater_weighted_degree",
 )
+
+
 _EDGE_GLOBALS = (
     "number_of_links",
     "total_weight",
@@ -51,6 +50,8 @@ _EDGE_GLOBALS = (
     "u_v_same_weight",
     "u_v_greater_weight",
 )
+
+
 _TEMPORAL = (
     "u_recent_count",
     "v_recent_count",

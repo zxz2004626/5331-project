@@ -1,4 +1,4 @@
-"""Classical estimators and training/validation-only model selection."""
+"""Models."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from sklearn.metrics import average_precision_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-from .cache import Cache, select_columns
+from .data import Cache, select_columns
 
 
 class NonnegativeLog1p(BaseEstimator, TransformerMixin):

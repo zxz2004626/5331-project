@@ -7,8 +7,9 @@ import json
 import numpy as np
 import pytest
 
-from graphbench import data, generators
-from graphbench.features import GraphHistory
+from graph_anomaly import data
+from graph_anomaly import generation as generators
+from graph_anomaly.features import GraphHistory
 
 
 def config():

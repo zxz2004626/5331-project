@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -11,16 +10,12 @@ from unittest.mock import patch
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from graphbench.evaluation import (
-    aggregate_results,
-    build_model,
-    compute_metrics,
-    load_cache,
-    run_evaluations,
-    select_columns,
-)
-from graphbench.features import feature_groups
+from graph_anomaly.data import load_cache, select_columns
+from graph_anomaly.evaluation import run_evaluations
+from graph_anomaly.features import feature_groups
+from graph_anomaly.metrics import compute_metrics
+from graph_anomaly.models import build_model
+from graph_anomaly.results import aggregate_results
 
 
 class MetricTests(unittest.TestCase):
@@ -159,7 +154,7 @@ class CacheEvaluationTests(unittest.TestCase):
             root = Path(temp)
             self._fixture(root)
             with patch(
-                "graphbench.evaluation.fit_selected_model",
+                "graph_anomaly.evaluation.fit_selected_model",
                 side_effect=RuntimeError("test fit failure"),
             ):
                 counts = run_evaluations(

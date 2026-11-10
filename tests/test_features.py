@@ -11,7 +11,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from graphbench.features import GraphHistory, feature_groups
+from graph_anomaly.features import GraphHistory, feature_groups
 
 
 def test_cold_start_finite_and_immutable():

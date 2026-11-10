@@ -9,15 +9,17 @@ from pathlib import Path
 
 import pytest
 
-from graphbench.artifacts import artifact_path
-from graphbench.cli import COMMANDS
-from graphbench.paths import ROOT, project_root
-from graphbench.provenance import EVALUATION_SOURCES, GENERATION_SOURCES, source_digest
-from graphbench.result_inputs import load_split_counts
-from graphbench.shell import find_bash, injection_command
-from graphbench.summaries import aggregate_results
-from graphbench.workflows.pipeline import pipeline_steps
-from graphbench.workflows.verify_artifacts import generation_hash, implementation_hash
+from graph_anomaly.artifacts import (
+    EVALUATION_SOURCES,
+    GENERATION_SOURCES,
+    artifact_path,
+    source_digest,
+)
+from graph_anomaly.cli import COMMANDS, pipeline_steps
+from graph_anomaly.config import ROOT, project_root
+from graph_anomaly.official import find_bash, injection_command
+from graph_anomaly.results import aggregate_results, load_split_counts
+from graph_anomaly.verify import generation_hash, implementation_hash
 
 
 @pytest.fixture
@@ -27,13 +29,10 @@ def moved_project(tmp_path):
         ROOT / "src", moved / "src", ignore=shutil.ignore_patterns("__pycache__", "*.egg-info")
     )
     shutil.copytree(ROOT / "configs", moved / "configs")
-    shutil.copytree(
-        ROOT / "scripts", moved / "scripts", ignore=shutil.ignore_patterns("__pycache__")
-    )
     elsewhere = tmp_path / "another working directory"
     elsewhere.mkdir()
     environment = os.environ.copy()
-    environment.pop("GRAPHBENCH_ROOT", None)
+    environment.pop("GRAPH_ANOMALY_ROOT", None)
     environment["PYTHONPATH"] = str(moved / "src")
     environment["PYTHONIOENCODING"] = "utf-8"
     return moved, elsewhere, environment
@@ -41,10 +40,7 @@ def moved_project(tmp_path):
 
 def test_cli_uses_relocated_sources_outside_the_checkout(moved_project):
     moved, elsewhere, environment = moved_project
-    for args in (
-        ["-m", "graphbench", "run", "--dry-run"],
-        [str(moved / "scripts/run_all.py"), "--dry-run"],
-    ):
+    for args in (["-m", "graph_anomaly", "run", "--dry-run"],):
         result = subprocess.run(
             [sys.executable, *args],
             cwd=elsewhere,
@@ -58,7 +54,7 @@ def test_cli_uses_relocated_sources_outside_the_checkout(moved_project):
         assert not (moved / "vendor").exists()
         assert not (moved / "results").exists()
     result = subprocess.run(
-        [sys.executable, "-m", "graphbench", "--root", str(moved), "generate", "--help"],
+        [sys.executable, "-m", "graph_anomaly", "--root", str(moved), "generate", "--help"],
         cwd=elsewhere,
         env=environment,
         capture_output=True,
@@ -72,7 +68,7 @@ def test_cli_uses_relocated_sources_outside_the_checkout(moved_project):
 def test_each_command_help_is_side_effect_free(moved_project, command):
     moved, elsewhere, environment = moved_project
     subprocess.run(
-        [sys.executable, "-m", "graphbench", command, "--help"],
+        [sys.executable, "-m", "graph_anomaly", command, "--help"],
         cwd=elsewhere,
         env=environment,
         capture_output=True,
@@ -84,7 +80,7 @@ def test_each_command_help_is_side_effect_free(moved_project, command):
 
 
 def test_source_hashes_survive_newlines_but_include_extracted_dependencies(tmp_path):
-    sources = tmp_path / "src/graphbench"
+    sources = tmp_path / "src/graph_anomaly"
     sources.mkdir(parents=True)
     for name in set(GENERATION_SOURCES + EVALUATION_SOURCES):
         (sources / name).write_bytes(b"# example\nvalue = 1\n")
@@ -104,9 +100,9 @@ def test_source_hashes_survive_newlines_but_include_extracted_dependencies(tmp_p
 def test_project_root_override_and_missing_configuration(tmp_path, monkeypatch):
     (tmp_path / "configs").mkdir()
     (tmp_path / "configs/experiment.json").write_text("{}")
-    monkeypatch.setenv("GRAPHBENCH_ROOT", str(tmp_path))
+    monkeypatch.setenv("GRAPH_ANOMALY_ROOT", str(tmp_path))
     assert project_root() == tmp_path.resolve()
-    monkeypatch.setenv("GRAPHBENCH_ROOT", str(tmp_path / "missing"))
+    monkeypatch.setenv("GRAPH_ANOMALY_ROOT", str(tmp_path / "missing"))
     with pytest.raises(ValueError, match="configs/experiment.json"):
         project_root()
 

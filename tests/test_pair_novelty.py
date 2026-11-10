@@ -7,8 +7,9 @@ import numpy as np
 import pytest
 import sklearn
 
-from graphbench import evaluation
-from graphbench.workflows import pair_novelty_control as ablation
+from graph_anomaly import controls as ablation
+from graph_anomaly.artifacts import evaluation_code_hash
+from graph_anomaly.data import load_cache
 
 
 @pytest.fixture
@@ -30,7 +31,7 @@ def fixture(tmp_path, monkeypatch):
         split=np.repeat([0, 1, 2], 4),
     )
     path.with_suffix(".json").write_text(json.dumps({"status": "complete", "feature_names": names}))
-    cache = evaluation.load_cache(path)
+    cache = load_cache(path)
     source_path = ablation.source_metadata_path(tmp_path, "ucimessages", 11, "G0")
     source_path.parent.mkdir(parents=True)
     source_path.with_suffix(".joblib").write_bytes(b"metadata-only-fixture")
@@ -43,7 +44,7 @@ def fixture(tmp_path, monkeypatch):
         "features": "extended",
         "source_cache_fingerprint": cache.fingerprint,
         "feature_names": names,
-        "evaluation_source_sha256": evaluation.evaluation_code_hash(),
+        "evaluation_source_sha256": evaluation_code_hash(),
         "python_version": platform.python_version(),
         "numpy_version": np.__version__,
         "sklearn_version": sklearn.__version__,

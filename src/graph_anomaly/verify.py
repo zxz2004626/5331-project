@@ -1,9 +1,4 @@
-"""Independently verify completed experiments without fitting any model.
-
-Default strict scope: 1,080 evaluations and 140 generator caches. At most one
-feature cache and one optional estimator are held in memory. --available-only
-audits completed artifacts while explicitly recording missing/incomplete work.
-"""
+"""Independent validation of scientific artifacts and saved predictions."""
 
 from __future__ import annotations
 
@@ -22,6 +17,11 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+import numpy as np
+
+from .artifacts import artifact_path
+from .config import ROOT
+
 for variable in (
     "OMP_NUM_THREADS",
     "MKL_NUM_THREADS",
@@ -29,16 +29,17 @@ for variable in (
     "NUMEXPR_NUM_THREADS",
 ):
     os.environ[variable] = "1"
-import numpy as np
-
-from graphbench.artifacts import artifact_path
-from graphbench.paths import ROOT
 
 SEEDS = [11, 23, 37, 51, 71]
+
 DATASETS = ["movielens", "ucimessages"]
+
 GENERATORS = ["G0", "G1", "G2", "G3"]
+
 SENSITIVITIES = ["ratio01", "ratio10", "window500", "window2000", "past_only"]
+
 ABLATIONS = ["local", "temporal", "tgf_local", "tgf_temporal", "local_temporal"]
+
 NO_PAIR_CONFIG_KEYS = [
     "schema_version",
     "scenario",
@@ -151,13 +152,13 @@ def implementation_hash(root, names):
     hasher = hashlib.sha256()
     for name in sorted(names):
         hasher.update(name.encode("utf-8"))
-        hasher.update((root / "src/graphbench" / name).read_bytes().replace(b"\r\n", b"\n"))
+        hasher.update((root / "src/graph_anomaly" / name).read_bytes().replace(b"\r\n", b"\n"))
     return hasher.hexdigest()
 
 
 def generation_hash(root):
     return implementation_hash(
-        root, ("data.py", "generators.py", "features.py", "paths.py", "provenance.py")
+        root, ("data.py", "generation.py", "features.py", "config.py", "artifacts.py")
     )
 
 
@@ -216,16 +217,15 @@ class Audit:
             root,
             (
                 "artifacts.py",
-                "cache.py",
-                "constants.py",
+                "data.py",
+                "config.py",
                 "evaluation.py",
                 "metrics.py",
                 "models.py",
-                "provenance.py",
-                "summaries.py",
+                "results.py",
             ),
         )
-        self.no_pair_hash = file_hash(root / "src/graphbench/workflows/pair_novelty_control.py")
+        self.no_pair_hash = file_hash(root / "src/graph_anomaly/controls.py")
         self.gen_hash = generation_hash(root)
         self.configuration = read_json(root / "configs/experiment.json")
         self.n_models_rescored = 0
@@ -448,35 +448,8 @@ class Audit:
                 f"Train/validation counts: {name}",
             )
 
-    def validate_cache(self, key, info, original):
-        name = "/".join(map(str, key))
-        scenario, dataset, seed, generator = key
-        manifest = info["manifest"]
-        configuration = self.scenario_configuration(scenario)
-        self.check(manifest["config"] == configuration, f"Declared configuration: {name}")
-        self.check(
-            manifest["dataset"]["sha256"] == original["sha256"], f"Original data checksum: {name}"
-        )
-        self.check(manifest["code_sha256"] == self.gen_hash, f"Generator code checksum: {name}")
-        signature = hashlib.sha256(
-            json.dumps(
-                {
-                    "cfg": configuration,
-                    "seed": seed,
-                    "generator": generator,
-                    "data": original["sha256"],
-                    "code": self.gen_hash,
-                },
-                sort_keys=True,
-            ).encode()
-        ).hexdigest()
-        self.check(manifest["signature"] == signature, f"Generator signature: {name}")
-        with np.load(info["path"], allow_pickle=False) as data:
-            values = {
-                field: data[field]
-                for field in ["X", "names", "t", "u", "v", "y", "split", "history_max_timestamp"]
-            }
-        values["names"] = values["names"].tolist()
+    def _validate_cache_timing(self, values, manifest, configuration, original, name):
+        """Check feature schema, elapsed-time splits, strict history, and warm-up preservation."""
         X, t, u, v, y, split = (values[field] for field in ["X", "t", "u", "v", "y", "split"])
         self.check(
             X.shape == (len(y), len(values["names"])) and np.isfinite(X).all(),
@@ -507,7 +480,6 @@ class Audit:
             np.array_equal(values["history_max_timestamp"], raw_t[previous]),
             f"Recorded history timestamp lineage: {name}",
         )
-        # The declared 1000th event has zero-based index999; exclude its whole timestamp.
         warmup = int(
             raw_t[min(configuration["history"]["warmup_observed_events"] - 1, len(raw_t) - 1)]
         )
@@ -522,6 +494,56 @@ class Audit:
                 np.array_equal(values[field][normal], original[field][valid]),
                 f"Observed event preservation/{field}: {name}",
             )
+        return normal
+
+    def _record_cache_validation(self, key, info, counts, y):
+        """Record the accepted cache identity and class counts for the audit summary."""
+        scenario, dataset, seed, generator = key
+        self.cache_results.append(
+            {
+                "scenario": scenario,
+                "dataset": dataset,
+                "seed": seed,
+                "generator": generator,
+                "npz_sha256": info["npz_sha256"],
+                "manifest_sha256": info["manifest_sha256"],
+                "fingerprint": info["fingerprint"],
+                "split_counts": counts,
+                "n_events": len(y),
+            }
+        )
+
+    def validate_cache(self, key, info, original):
+        name = "/".join(map(str, key))
+        scenario, dataset, seed, generator = key
+        manifest = info["manifest"]
+        configuration = self.scenario_configuration(scenario)
+        self.check(manifest["config"] == configuration, f"Declared configuration: {name}")
+        self.check(
+            manifest["dataset"]["sha256"] == original["sha256"], f"Original data checksum: {name}"
+        )
+        self.check(manifest["code_sha256"] == self.gen_hash, f"Generator code checksum: {name}")
+        signature = hashlib.sha256(
+            json.dumps(
+                {
+                    "cfg": configuration,
+                    "seed": seed,
+                    "generator": generator,
+                    "data": original["sha256"],
+                    "code": self.gen_hash,
+                },
+                sort_keys=True,
+            ).encode()
+        ).hexdigest()
+        self.check(manifest["signature"] == signature, f"Generator signature: {name}")
+        with np.load(info["path"], allow_pickle=False) as data:
+            values = {
+                field: data[field]
+                for field in ["X", "names", "t", "u", "v", "y", "split", "history_max_timestamp"]
+            }
+        values["names"] = values["names"].tolist()
+        X, t, u, v, y, split = (values[field] for field in ["X", "t", "u", "v", "y", "split"])
+        normal = self._validate_cache_timing(values, manifest, configuration, original, name)
         n_nodes = original["n_nodes"]
         self.check(
             np.all((u >= 0) & (u < n_nodes) & (v >= 0) & (v < n_nodes) & (u != v)),
@@ -578,19 +600,7 @@ class Audit:
             )
         self.validate_generator_audit(info, values, original, positive_rows, configuration, name)
         values["fingerprint"] = info["fingerprint"]
-        self.cache_results.append(
-            {
-                "scenario": scenario,
-                "dataset": dataset,
-                "seed": seed,
-                "generator": generator,
-                "npz_sha256": info["npz_sha256"],
-                "manifest_sha256": info["manifest_sha256"],
-                "fingerprint": info["fingerprint"],
-                "split_counts": counts,
-                "n_events": len(y),
-            }
-        )
+        self._record_cache_validation(key, info, counts, y)
         return values
 
     def validate_generator_audit(self, info, values, original, positive_rows, configuration, name):
@@ -936,7 +946,7 @@ class Audit:
             "optional_model_checksums": self.model_results,
             "check_notes": [
                 "No model fitting occurs. At most one feature cache and one optional estimator are resident.",
-                "All main and novel-normal metrics are recomputed independently of graphbench.evaluation.compute_metrics.",
+                "All main and novel-normal metrics are recomputed independently of graph_anomaly.evaluation.compute_metrics.",
                 "Legality is checked against independently remapped original data, including warmup, full/past absence, unique injections, partitions, quotas and observed-event preservation.",
                 "Timestamp lineage arrays and audit logs are checked; all feature vectors are not regenerated from scratch.",
                 "Configuration/source/cache/model provenance fingerprints are checked. Serialized estimator rescoring is optional; main_audit.json already documents all360 main estimators.",
@@ -1004,7 +1014,3 @@ def main():
     return int(
         report["status"] == "failed" or (report["status"] != "passed" and not args.available_only)
     )
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())

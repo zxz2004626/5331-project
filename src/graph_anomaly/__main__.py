@@ -1,4 +1,6 @@
-"""Support python -m graphbench."""
+"""main  ."""
+
+from __future__ import annotations
 
 from .cli import main
 

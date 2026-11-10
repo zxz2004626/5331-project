@@ -1,4 +1,4 @@
-"""Atomic result writers and exact-byte artifact fingerprints."""
+"""Atomic artifact I/O and normalized source fingerprints."""
 
 from __future__ import annotations
 
@@ -66,4 +66,39 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         writer = csv.DictWriter(stream, fieldnames=fields)
         writer.writeheader()
         writer.writerows(rows)
+    os.replace(temporary, path)
+
+
+GENERATION_SOURCES = ("data.py", "generation.py", "features.py", "config.py", "artifacts.py")
+EVALUATION_SOURCES = (
+    "artifacts.py",
+    "data.py",
+    "config.py",
+    "evaluation.py",
+    "metrics.py",
+    "models.py",
+    "results.py",
+)
+
+
+def source_digest(directory: Path, names) -> str:
+    digest = hashlib.sha256()
+    for name in sorted(names):
+        digest.update(name.encode("utf-8"))
+        digest.update((directory / name).read_bytes().replace(b"\r\n", b"\n"))
+    return digest.hexdigest()
+
+
+def evaluation_code_hash() -> str:
+    return source_digest(Path(__file__).parent, EVALUATION_SOURCES)
+
+
+def _write_npz(path: Path, **arrays) -> None:
+    """Write a complete compressed prediction/cache archive atomically."""
+    import numpy as np
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    with temporary.open("wb") as stream:
+        np.savez_compressed(stream, **arrays)
     os.replace(temporary, path)

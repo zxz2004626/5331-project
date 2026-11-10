@@ -1,16 +1,10 @@
-"""Fixed-hyperparameter RF attribution control: extended minus pair_seen_before.
-
-Uses only an already completed *source-generator* extended RF's validation
-selection. No hyperparameter search, target-generator transfer, or test tuning.
-Run again to resume; --available-only processes source models already on disk.
-"""
+"""Prior-pair feature removal and first-seen interaction controls."""
 
 from __future__ import annotations
 
 import argparse
 import itertools
 import json
-import os
 import platform
 import time
 from pathlib import Path
@@ -19,21 +13,18 @@ import numpy as np
 import sklearn
 from threadpoolctl import threadpool_limits
 
-from graphbench import evaluation
-from graphbench.artifacts import artifact_path
-from graphbench.evaluation import (
-    GENERATORS,
-    SEEDS,
-    anomaly_scores,
-    build_model,
-    compute_metrics,
-    load_cache,
-    select_columns,
-)
-from graphbench.paths import ROOT as PROJECT_ROOT
+from . import artifacts
+from .artifacts import artifact_path
+from .config import GENERATORS, SEEDS
+from .config import ROOT as PROJECT_ROOT
+from .data import load_cache, select_columns
+from .metrics import compute_metrics
+from .models import anomaly_scores, build_model
 
 DATASETS = ["movielens", "ucimessages"]
+
 REMOVED_FEATURE = "pair_seen_before"
+
 FEATURE_SET = "extended_no_pair"
 
 
@@ -86,15 +77,15 @@ def validate_source(source, cache, dataset, seed, generator, evaluation_hash):
     return int(params["min_samples_leaf"])
 
 
-def run_one(root, dataset, seed, generator, n_jobs=2):
-    root = Path(root).resolve()
+def _prepare_control(root, dataset, seed, generator, n_jobs):
+    """Validate the source model and choose the exact ablated feature set and settings."""
     source_path = source_metadata_path(root, dataset, seed, generator)
-    source = evaluation._read_json(source_path)
+    source = artifacts._read_json(source_path)
     if source is None or not source_path.with_suffix(".joblib").exists():
         raise FileNotFoundError(f"Completed source extended model is unavailable: {source_path}")
     cache_path = root / f"results/cache/main/{dataset}/seed_{seed}/{generator}.npz"
     cache = load_cache(cache_path)
-    evaluation_hash = evaluation.evaluation_code_hash()
+    evaluation_hash = artifacts.evaluation_code_hash()
     parameter = validate_source(source, cache, dataset, seed, generator, evaluation_hash)
     names = [name for name in cache.names if name != REMOVED_FEATURE]
     configuration = {
@@ -111,32 +102,82 @@ def run_one(root, dataset, seed, generator, n_jobs=2):
         "n_jobs": n_jobs,
         "source_cache_fingerprint": cache.fingerprint,
         "source_model_metadata_file": source_path.relative_to(root).as_posix(),
-        "source_model_metadata_sha256": evaluation._file_hash(source_path),
+        "source_model_metadata_sha256": artifacts._file_hash(source_path),
         "source_model_fingerprint": source["model_fingerprint"],
         "evaluation_source_sha256": evaluation_hash,
-        "ablation_source_sha256": evaluation._file_hash(Path(__file__)),
+        "ablation_source_sha256": artifacts._file_hash(Path(__file__)),
         "python_version": platform.python_version(),
         "numpy_version": np.__version__,
         "sklearn_version": sklearn.__version__,
         "hyperparameter_origin": "source_extended_RF_validation_selection_reused_without_retuning",
         "selected_min_samples_leaf": parameter,
     }
-    fingerprint = evaluation._digest(configuration)
+    return (source, cache, names, parameter, configuration)
+
+
+def _fit_control_predictions(cache, names, parameter, seed, n_jobs, identifier, prediction_path):
+    """Refit the fixed control settings, score the test subset, and save aligned predictions."""
+    X = select_columns(cache, names)
+    development, test = (cache.split != 2, cache.split == 2)
+    model = build_model("RF", parameter, seed, n_jobs)
+    start = time.perf_counter()
+    print(f"FIT no-pair {identifier} min_samples_leaf={parameter}", flush=True)
+    model.fit(X[development], cache.y[development])
+    fit_seconds = time.perf_counter() - start
+    start = time.perf_counter()
+    scores = anomaly_scores(model, X[test])
+    y = cache.y[test]
+    metrics = compute_metrics(y, scores)
+    seen = cache.X[test, cache.names.index(REMOVED_FEATURE)] > 0
+    novel = (y == 1) | ~seen
+    novel_metrics = (
+        compute_metrics(y[novel], scores[novel]) if len(np.unique(y[novel])) == 2 else None
+    )
+    artifacts._write_npz(
+        prediction_path,
+        y=y,
+        scores=scores,
+        row_id=np.flatnonzero(test),
+        t=cache.t[test],
+        u=cache.u[test],
+        v=cache.v[test],
+        novel_normal_subset=novel,
+    )
+    return {
+        "n_refit": int(development.sum()),
+        "n_test": int(test.sum()),
+        "metrics": metrics,
+        "novel_normal_metrics": novel_metrics,
+        "novel_normal_status": "complete" if novel_metrics else "single_class_after_filter",
+        "normal_previously_seen_fraction": float(seen[y == 0].mean()),
+        "times": {"refit_seconds": fit_seconds, "evaluation_seconds": time.perf_counter() - start},
+        "feature_importance_impurity": {
+            name: float(value) for name, value in zip(names, model.feature_importances_)
+        },
+    }
+
+
+def run_one(root, dataset, seed, generator, n_jobs=2):
+    root = Path(root).resolve()
+    source, cache, names, parameter, configuration = _prepare_control(
+        root, dataset, seed, generator, n_jobs
+    )
+    fingerprint = artifacts._digest(configuration)
     identifier = model_id(dataset, seed, generator)
     output = root / "results/no_pair"
     run_path = output / "runs" / f"{identifier}.json"
     prediction_path = output / "predictions" / f"{identifier}.npz"
-    previous = evaluation._read_json(run_path)
+    previous = artifacts._read_json(run_path)
     if (
         previous
         and previous.get("status") == "complete"
-        and previous.get("run_fingerprint") == fingerprint
+        and (previous.get("run_fingerprint") == fingerprint)
         and prediction_path.exists()
-        and previous.get("prediction_sha256") == evaluation._file_hash(prediction_path)
+        and (previous.get("prediction_sha256") == artifacts._file_hash(prediction_path))
     ):
         print(f"RESUME no-pair {identifier}", flush=True)
-        return previous, False
-    evaluation._write_json(
+        return (previous, False)
+    artifacts._write_json(
         run_path,
         {
             **configuration,
@@ -146,38 +187,9 @@ def run_one(root, dataset, seed, generator, n_jobs=2):
         },
     )
     try:
-        X = select_columns(cache, names)
-        development, test = cache.split != 2, cache.split == 2
-        model = build_model("RF", parameter, seed, n_jobs)
-        start = time.perf_counter()
-        print(f"FIT no-pair {identifier} min_samples_leaf={parameter}", flush=True)
-        model.fit(X[development], cache.y[development])
-        fit_seconds = time.perf_counter() - start
-        start = time.perf_counter()
-        scores = anomaly_scores(model, X[test])
-        y = cache.y[test]
-        metrics = compute_metrics(y, scores)
-        # This excluded column is used only to define an evaluation subset.
-        # It is never supplied to the ablated estimator or parameter selection.
-        seen = cache.X[test, cache.names.index(REMOVED_FEATURE)] > 0
-        novel = (y == 1) | ~seen
-        novel_metrics = (
-            compute_metrics(y[novel], scores[novel]) if len(np.unique(y[novel])) == 2 else None
+        analysis = _fit_control_predictions(
+            cache, names, parameter, seed, n_jobs, identifier, prediction_path
         )
-        prediction_path.parent.mkdir(parents=True, exist_ok=True)
-        temporary = prediction_path.with_suffix(".npz.tmp")
-        with temporary.open("wb") as stream:
-            np.savez_compressed(
-                stream,
-                y=y,
-                scores=scores,
-                row_id=np.flatnonzero(test),
-                t=cache.t[test],
-                u=cache.u[test],
-                v=cache.v[test],
-                novel_normal_subset=novel,
-            )
-        os.replace(temporary, prediction_path)
         record = {
             **configuration,
             "status": "complete",
@@ -192,32 +204,27 @@ def run_one(root, dataset, seed, generator, n_jobs=2):
             },
             "n_train": int((cache.split == 0).sum()),
             "n_val": int((cache.split == 1).sum()),
-            "n_refit": int(development.sum()),
-            "n_test": int(test.sum()),
+            "n_refit": analysis["n_refit"],
+            "n_test": analysis["n_test"],
             "refit_on_train_plus_validation": True,
             "hyperparameter_search_performed": False,
             "source_selected_validation_average_precision": source["fitting"][
                 "selected_validation_average_precision"
             ],
-            "metrics": metrics,
-            "novel_normal_metrics": novel_metrics,
-            "novel_normal_status": "complete" if novel_metrics else "single_class_after_filter",
-            "normal_previously_seen_fraction": float(seen[y == 0].mean()),
-            "times": {
-                "refit_seconds": fit_seconds,
-                "evaluation_seconds": time.perf_counter() - start,
-            },
+            "metrics": analysis["metrics"],
+            "novel_normal_metrics": analysis["novel_normal_metrics"],
+            "novel_normal_status": analysis["novel_normal_status"],
+            "normal_previously_seen_fraction": analysis["normal_previously_seen_fraction"],
+            "times": analysis["times"],
             "prediction_file": prediction_path.relative_to(root).as_posix(),
-            "prediction_sha256": evaluation._file_hash(prediction_path),
+            "prediction_sha256": artifacts._file_hash(prediction_path),
             "tie_breaking": "ascending preserved cache row index",
-            "feature_importance_impurity": {
-                name: float(value) for name, value in zip(names, model.feature_importances_)
-            },
+            "feature_importance_impurity": analysis["feature_importance_impurity"],
         }
-        evaluation._write_json(run_path, record)
-        return record, True
+        artifacts._write_json(run_path, record)
+        return (record, True)
     except Exception as error:
-        evaluation._write_json(
+        artifacts._write_json(
             run_path,
             {
                 **configuration,
@@ -236,11 +243,11 @@ def aggregate(root):
     root = Path(root).resolve()
     output = root / "results/no_pair"
     rows, missing, stale = [], [], []
-    script_hash = evaluation._file_hash(Path(__file__))
-    evaluation_hash = evaluation.evaluation_code_hash()
+    script_hash = artifacts._file_hash(Path(__file__))
+    evaluation_hash = artifacts.evaluation_code_hash()
     for dataset, seed, generator in itertools.product(DATASETS, SEEDS, GENERATORS):
         identifier = model_id(dataset, seed, generator)
-        record = evaluation._read_json(output / "runs" / f"{identifier}.json")
+        record = artifacts._read_json(output / "runs" / f"{identifier}.json")
         if not record or record.get("status") != "complete":
             missing.append(identifier)
             continue
@@ -251,18 +258,18 @@ def aggregate(root):
         paths = [source_path, prediction_path, cache_path, manifest_path]
         current = all(path.exists() for path in paths)
         if current:
-            cache_fingerprint = evaluation._digest(
+            cache_fingerprint = artifacts._digest(
                 {
-                    "npz_sha256": evaluation._file_hash(cache_path),
-                    "metadata_sha256": evaluation._file_hash(manifest_path),
+                    "npz_sha256": artifacts._file_hash(cache_path),
+                    "metadata_sha256": artifacts._file_hash(manifest_path),
                 }
             )
             current = (
                 record.get("ablation_source_sha256") == script_hash
                 and record.get("evaluation_source_sha256") == evaluation_hash
                 and record.get("source_cache_fingerprint") == cache_fingerprint
-                and record.get("source_model_metadata_sha256") == evaluation._file_hash(source_path)
-                and record.get("prediction_sha256") == evaluation._file_hash(prediction_path)
+                and record.get("source_model_metadata_sha256") == artifacts._file_hash(source_path)
+                and record.get("prediction_sha256") == artifacts._file_hash(prediction_path)
             )
         if not current:
             stale.append(identifier)
@@ -301,9 +308,9 @@ def aggregate(root):
         "ablation_source_sha256": script_hash,
         "evaluation_source_sha256": evaluation_hash,
     }
-    evaluation._write_json(output / "status.json", status)
+    artifacts._write_json(output / "status.json", status)
     if complete:
-        evaluation._write_csv(output / "metrics.csv", rows)
+        artifacts._write_csv(output / "metrics.csv", rows)
     elif (output / "metrics.csv").exists():
         # Generated summary is recoverable; never leave a stale complete table.
         (output / "metrics.csv").unlink()
@@ -360,7 +367,3 @@ def main():
     )
     print(json.dumps(counts, indent=2))
     return int(counts["failed"] > 0 or (counts["unavailable"] > 0 and not args.available_only))
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
