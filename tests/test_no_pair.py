@@ -1,7 +1,6 @@
 """Attribution control must drop pair history and reuse source parameters only."""
-import importlib.util
+
 import json
-from pathlib import Path
 import platform
 
 import numpy as np
@@ -9,10 +8,7 @@ import pytest
 import sklearn
 
 from graphbench import evaluate
-
-SPEC = importlib.util.spec_from_file_location("no_pair_ablation", Path(__file__).resolve().parents[1] / "scripts/no_pair_ablation.py")
-ablation = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(ablation)
+from graphbench.workflows import no_pair_ablation as ablation
 
 
 @pytest.fixture
@@ -23,23 +19,46 @@ def fixture(tmp_path, monkeypatch):
     names = ["signal", "pair_seen_before", "recent"]
     X = np.tile(np.array([[1, 1, 2], [8, 0, 4], [2, 0, 3], [7, 0, 5]], dtype=np.float32), (3, 1))
     y = np.tile([0, 1, 0, 1], 3).astype(np.int8)
-    np.savez_compressed(path, X=X, names=np.array(names), y=y,
-                        t=np.arange(12), u=np.zeros(12, dtype=int),
-                        v=np.ones(12, dtype=int), split=np.repeat([0, 1, 2], 4))
+    np.savez_compressed(
+        path,
+        X=X,
+        names=np.array(names),
+        y=y,
+        t=np.arange(12),
+        u=np.zeros(12, dtype=int),
+        v=np.ones(12, dtype=int),
+        split=np.repeat([0, 1, 2], 4),
+    )
     path.with_suffix(".json").write_text(json.dumps({"status": "complete", "feature_names": names}))
     cache = evaluate.load_cache(path)
     source_path = ablation.source_metadata_path(tmp_path, "ucimessages", 11, "G0")
     source_path.parent.mkdir(parents=True)
     source_path.with_suffix(".joblib").write_bytes(b"metadata-only-fixture")
-    source = {"scenario": "main", "dataset": "ucimessages", "seed": 11,
-        "source_generator": "G0", "model": "RF", "features": "extended",
-        "source_cache_fingerprint": cache.fingerprint, "feature_names": names,
-        "evaluation_source_sha256": evaluate._file_hash(Path(evaluate.__file__)),
-        "python_version": platform.python_version(), "numpy_version": np.__version__,
-        "sklearn_version": sklearn.__version__, "model_fingerprint": "source-model",
-        "fitting": {"selected_params": {"n_estimators": 100,
-            "class_weight": "balanced_subsample", "random_state": 11, "min_samples_leaf": 5},
-            "refit_on_train_plus_validation": True, "selected_validation_average_precision": 0.77}}
+    source = {
+        "scenario": "main",
+        "dataset": "ucimessages",
+        "seed": 11,
+        "source_generator": "G0",
+        "model": "RF",
+        "features": "extended",
+        "source_cache_fingerprint": cache.fingerprint,
+        "feature_names": names,
+        "evaluation_source_sha256": evaluate.evaluation_code_hash(),
+        "python_version": platform.python_version(),
+        "numpy_version": np.__version__,
+        "sklearn_version": sklearn.__version__,
+        "model_fingerprint": "source-model",
+        "fitting": {
+            "selected_params": {
+                "n_estimators": 100,
+                "class_weight": "balanced_subsample",
+                "random_state": 11,
+                "min_samples_leaf": 5,
+            },
+            "refit_on_train_plus_validation": True,
+            "selected_validation_average_precision": 0.77,
+        },
+    }
     source_path.write_text(json.dumps(source))
     calls = []
 
@@ -111,8 +130,9 @@ def test_mismatched_source_does_not_fit(fixture):
 
 
 def test_available_only_skips_missing_sources_without_fitting(tmp_path):
-    counts = ablation.run_no_pair(tmp_path, datasets=["ucimessages"], seeds=[11],
-                                  generators=["G0"], available_only=True)
+    counts = ablation.run_no_pair(
+        tmp_path, datasets=["ucimessages"], seeds=[11], generators=["G0"], available_only=True
+    )
     assert counts == {"fitted": 0, "resumed": 0, "unavailable": 1, "failed": 0, "complete_total": 0}
     assert not (tmp_path / "results/no_pair/metrics.csv").exists()
 

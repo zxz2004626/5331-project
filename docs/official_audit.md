@@ -83,7 +83,7 @@ MovieLens AP decreases by 0.065256 (6.53 percentage points) under strict prior-t
 
 The `--fresh-pipeline` command runs both original preprocessing notebooks from raw data in `results/official/fresh_pipeline/<dataset>/`, executing **all code cells unchanged**. The generated cleaned rows are checked against the committed cleaned data in exact order. It then executes the original `bip_build_injectable.sh`/`build_injectable.sh` at 20%, `inject.sh` at 5%, and `bip_check.sh`/`check.sh` at 5%.
 
-Windows Git checkout converted shell files to CRLF, so the wrapper copies their exact LF **Git blobs** from the pinned commit into the isolated directory. Git Bash's `python3` resolves to a Microsoft Store alias on this host; a shell function routes that command to the installed `E:/anaconda/python.exe` and normalizes its stdout from Windows CRLF to Linux LF. Without the latter adjustment, embedded carriage returns survive `paste` and cause the original checker's temporal-order check to fail; the initial failure log is retained. No sampling algorithm or source logic is patched. Every script's Git-blob SHA-256, original cell indices, command arguments, stdout/stderr, input/output hashes and checks are recorded beside its output.
+Windows Git checkout converted shell files to CRLF, so the wrapper copies their exact LF **Git blobs** from the pinned commit into the isolated directory. Git Bash's `python3` resolves to a Microsoft Store alias on this host; a shell function routes that command to the then-installed Python interpreter and normalizes its stdout from Windows CRLF to Linux LF. Without the latter adjustment, embedded carriage returns survive `paste` and cause the original checker's temporal-order check to fail; the initial failure log is retained. No sampling algorithm or source logic is patched. Every script's Git-blob SHA-256, original cell indices, command arguments, stdout/stderr, input/output hashes and checks are recorded beside its output.
 
 The unseeded original `random.seed()` sampler and `shuf` produce a new realization on each run. This execution validates the original preprocessing and injection stages; fixed committed-stream features and learning remain the basis for the faithful metric table. Fresh injected streams are retained with hashes, and no fresh-stream training result is claimed. The original checker must report `everything seems ok`; additional Python assertions verify original-normal preservation, exact injected counts, unique triples, nondecreasing timestamps, no loops, no injected original triple, and MovieLens partition preservation.
 
@@ -108,10 +108,10 @@ The unseeded original `random.seed()` sampler and `shuf` produce a new realizati
 From the project root:
 
 ```powershell
-E:/anaconda/python.exe scripts/official_reproduction.py
-E:/anaconda/python.exe scripts/official_reproduction.py --paired-timing
-E:/anaconda/python.exe scripts/official_reproduction.py --fresh-pipeline
-E:/anaconda/python.exe scripts/official_reproduction.py --verify-output
+python scripts/official_reproduction.py
+python scripts/official_reproduction.py --paired-timing
+python scripts/official_reproduction.py --fresh-pipeline
+python scripts/official_reproduction.py --verify-output
 ```
 
 The first command reruns both complete datasets. `--dataset movielens` or `--dataset ucimessages` restricts either command. Runtime measurements in the first run include IO and feature serialization for feature generation; seed-42 `fit_seconds` includes unchanged notebook preparation and evaluation cells, while the extra-seed values time only fitting. Therefore these columns are diagnostic elapsed times, not a fair model speed comparison. The released `cost` field itself times arrival/eviction but not the subsequent full feature extraction/serialization.

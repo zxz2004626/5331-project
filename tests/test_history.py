@@ -1,11 +1,12 @@
 """Arithmetic checks, official implementation parity, and causal invariants."""
-from collections import Counter
+
 import json
 import math
-from pathlib import Path
 import random
 import subprocess
 import sys
+from collections import Counter
+from pathlib import Path
 
 import numpy as np
 import pytest

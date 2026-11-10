@@ -1,16 +1,16 @@
 # 实验报告：异常注入方式如何影响图异常检测结论
 
-本报告根据 `kdd_proposal.pdf` 的正式方案完成。数据、模型和图表均来自实际运行，主实验未抽样缩小数据集。核心发现是：**异常生成机制明显影响检测分数；增加少量时间特征可以恢复部分性能，但匹配没有消除全部统计捷径。**
+本报告根据 `docs/proposal.pdf` 的正式方案完成。数据、模型和图表均来自实际运行，主实验未抽样缩小数据集。核心发现是：**异常生成机制明显影响检测分数；增加少量时间特征可以恢复部分性能，但匹配没有消除全部统计捷径。**
 
 ## 1. 已完成的工作
 
 官方原始代码的预处理、异常注入与检查、特征提取和 RF notebook 学习步骤均已运行。主实验包括两个数据集、四种生成器、RF/LR、两套特征和五个种子，共160个核心模型；完整跨生成器测试产生640项评估。另完成200个特征消融、200个敏感性模型，以及40个移除历史边出现标志的补充模型。扩展实验合计600个最终模型、1080项测试评估；官方与时间协议对照另有20项模型结果。
 
-复现入口是 [README.md](README.md) 和 [scripts/run_all.ps1](scripts/run_all.ps1)。完整协议、生成器诊断和独立结果审计分别位于 [experiment_plan.md](docs/experiment_plan.md)、[generator_audit.md](docs/generator_audit.md)、[results_review.md](docs/results_review.md)。
+复现入口是 [README.md](README.md) 和 [scripts/run_all.ps1](scripts/run_all.ps1)。完整协议、生成器诊断和独立结果审计分别位于 [experiment_plan.md](../docs/experiment_plan.md)、[generator_audit.md](../docs/generator_audit.md)、[results_review.md](../docs/results_review.md)。
 
 ## 2. 数据与实验设计
 
-使用作者仓库固定提交 `af9d575e07c7bc3fd0b4a0b8d0249e7cdd2eb88b` 中的完整示例：MovieLens100K 的100,000条交互，以及清理后的 UCI Messages59,795条交互。MovieLens 是二部图，UCI 是无向单部图。数据来源、校验和、节点数及时间边界保存在 [data/manifest.json](data/manifest.json)。
+使用作者仓库固定提交 `af9d575e07c7bc3fd0b4a0b8d0249e7cdd2eb88b` 中的完整示例：MovieLens100K 的100,000条交互，以及清理后的 UCI Messages59,795条交互。MovieLens 是二部图，UCI 是无向单部图。数据来源、校验和、节点数及时间边界保存在 [data/manifest.json](../data/manifest.json)。
 
 严格按照真实时间跨度60%/20%/20%划分，且一个时间戳不会同时出现在两个集合中。预热至第1000条原始交互所在的整个时间戳结束。主实验历史为最后1000条正常与注入交互，所有同时间戳事件先基于冻结历史评分，再统一更新；最近活动窗口固定为一天。以下计数对五个种子、四个生成器一致：
 
@@ -59,7 +59,7 @@ RF 使用100棵树，并由验证 AP 在叶子最小样本数1/5之间选择；L
 | UCI Messages | G2 | 0.413 ± 0.047 | 0.569 ± 0.096 | 0.376 ± 0.026 | 0.558 ± 0.020 |
 | UCI Messages | G3 | 0.357 ± 0.016 | 0.537 ± 0.034 | 0.335 ± 0.026 | 0.512 ± 0.025 |
 
-![主实验 AP](results/report/figures/main_average_precision.png)
+![主实验 AP](../results/report/figures/main_average_precision.png)
 
 RF-TGF 从 G0 到 G3 在 MovieLens 下降0.4579，在 UCI 下降0.2421个 AP 单位。对应的配对种子差值如下。分数仍高于约0.05的类别先验基线，不能称为“完全失效”。
 
@@ -70,21 +70,21 @@ RF-TGF 从 G0 到 G3 在 MovieLens 下降0.4579，在 UCI 下降0.2421个 AP 单
 | ucimessages | tgf | -0.2421 ± 0.0502 |
 | ucimessages | extended | -0.1662 ± 0.0585 |
 
-完整 ROC-AUC、梯形 PR-AUC、Precision@K 和 Recall@K 位于 [主指标表](results/report/tables/main_all_metrics.csv)。K 等于真实测试异常数，故 Precision@K 与 Recall@K 相同；它们是事后排序指标，不代表可在线获知的报警阈值。
+完整 ROC-AUC、梯形 PR-AUC、Precision@K 和 Recall@K 位于 [主指标表](../results/report/tables/main_all_metrics.csv)。K 等于真实测试异常数，故 Precision@K 与 Recall@K 相同；它们是事后排序指标，不代表可在线获知的报警阈值。
 
 ## 5. RQ2：匹配是否成功，以及模型在利用什么信号
 
-![生成器诊断](results/report/figures/generator_diagnostics.png)
+![生成器诊断](../results/report/figures/generator_diagnostics.png)
 
 端点、局部和时间组的 KS 距离是该组各特征的平均值。prior_pair 单独显示，避免把无法匹配的历史新边信号混入活动匹配的诊断。G3 比 G0 缩小了两套数据的端点和活动差异，但 UCI 的局部差异没有稳定缩小。按整流平均匹配距离看，G3 仍有约76%的 MovieLens 注入边、69%的 UCI 注入边超过预先报告的 log2 端点距离参考值。因此，实验支持“不同注入机制改变测得难度”，不足以支持“只改变了某一种结构因素”的强因果结论。
 
-![特征分布](results/report/figures/feature_distributions_seed11.png)
+![特征分布](../results/report/figures/feature_distributions_seed11.png)
 
 图中使用预先固定的种子11展示测试分布；完整 SMD、KS、Wasserstein、候选接受率、拒绝原因和逐边匹配记录均随缓存保存。不同生成器的混合历史不同，图中也分别保留正常边分布。
 
 ## 6. RQ3：跨生成器泛化
 
-![RF 跨生成器 AP](results/report/figures/cross_generator_RF.png)
+![RF 跨生成器 AP](../results/report/figures/cross_generator_RF.png)
 
 | 数据 | 特征 | G0训练→G3测试 | G3训练→G3测试 | 均值差 |
 | --- | --- | --- | --- | --- |
@@ -93,15 +93,15 @@ RF-TGF 从 G0 到 G3 在 MovieLens 下降0.4579，在 UCI 下降0.2421个 AP 单
 | UCI Messages | tgf | 0.227 ± 0.019 | 0.357 ± 0.016 | +0.1294 |
 | UCI Messages | extended | 0.323 ± 0.046 | 0.537 ± 0.034 | +0.2138 |
 
-对固定 G3 测试分布，使用 G0 训练的 RF 通常低于使用 G3 训练的模型，说明训练注入机制影响可迁移性。但并不是每一列都由对角线模型获胜，迁移具有不对称性。LR 的完整矩阵见 [LR 图](results/report/figures/cross_generator_LR.png)，不把 RF 的观察直接推广到所有分类器。
+对固定 G3 测试分布，使用 G0 训练的 RF 通常低于使用 G3 训练的模型，说明训练注入机制影响可迁移性。但并不是每一列都由对角线模型获胜，迁移具有不对称性。LR 的完整矩阵见 [LR 图](../results/report/figures/cross_generator_LR.png)，不把 RF 的观察直接推广到所有分类器。
 
 ## 7. RQ4：轻量扩展与特征消融
 
-![特征消融](results/report/figures/feature_ablation.png)
+![特征消融](../results/report/figures/feature_ablation.png)
 
 RF-G3 的完整扩展特征 AP 在 MovieLens 为0.691 ± 0.014，UCI 为0.537 ± 0.034。消融显示主要增益来自时间组；局部特征单独使用时表现弱，TGF+local 与 TGF 的差别也较小。增加局部特征并不总能进一步提高 AP。完整扩展模型不是每个条件中最优的特征组合，且未依据测试集重新选择最终特征。
 
-![RF 特征重要性](results/report/figures/feature_importance.png)
+![RF 特征重要性](../results/report/figures/feature_importance.png)
 
 RF 的 impurity importance 仅作描述性分析，不能作为变量的因果贡献。时间组含 `pair_seen_before`，因此增加以下控制：从完整扩展特征中去掉该标志，复用相应源生成器的验证集选定参数，重新拟合一次。它去掉的是显式 lifetime 标志，而 TGF 历史边权仍可能编码部分重复信息；随机森林的特征抽样也会随维度改变，因此不将小幅差异视为精确的单变量因果效应。
 
@@ -148,7 +148,7 @@ UCI 子集异常比例提高到约22.71%，故不能通过子集 AP 与全量 AP
 | UCI Messages | window2000 | 0.709 ± 0.022 | 0.784 ± 0.014 | 0.378 ± 0.048 | 0.562 ± 0.036 |
 | UCI Messages | past_only | 0.589 ± 0.041 | 0.732 ± 0.036 | 0.363 ± 0.040 | 0.549 ± 0.016 |
 
-![敏感性分析](results/report/figures/sensitivity.png)
+![敏感性分析](../results/report/figures/sensitivity.png)
 
 改变异常比例同时改变 AP 的随机基线和混合历史，因此比例实验应结合 ROC-AUC 与实际先验一起读，不能将 AP 的变化全部归因于检测能力。H 窗口同时作用于候选匹配与检测特征，并非仅改变检测器。past-only 条件也可能选到后来会真实出现的边，其标签含义与全局非边不同。逐次指标和配对主实验控制都已保存。上述五类设置中，两个数据集的 G3 均低于对应 G0；但更长的历史并不保证更高 AP，例如 MovieLens 的 G3-TGF 在 H2000 时低于 H1000。
 

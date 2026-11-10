@@ -1,6 +1,6 @@
 # Independent methodological review
 
-Source of requirements: `kdd_proposal.pdf`, pages 3–7. The PDF supersedes the older `proposal.md`. This note is a design review, not a record that an experiment has already run.
+Source of requirements: `proposal.pdf`, pages 3–7. The PDF supersedes the older `archive/proposal_draft.md`. This note is a design review, not a record that an experiment has already run.
 
 ## Required scope and completion accounting
 

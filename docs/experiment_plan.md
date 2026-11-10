@@ -1,6 +1,6 @@
 # Experimental protocol (fixed before detector results)
 
-The authoritative specification is `kdd_proposal.pdf`, September 2026. The earlier `proposal.md` is background. This implementation tests synthetic edge detection, not real fraud detection.
+The authoritative specification is `proposal.pdf`, September 2026. The earlier `archive/proposal_draft.md` is background. This implementation tests synthetic edge detection, not real fraud detection.
 
 ## Data and provenance
 
