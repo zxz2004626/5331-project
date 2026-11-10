@@ -17,7 +17,7 @@ for variable in [
 ]:
     os.environ[variable] = "2"
 
-from graphbench.evaluate import (
+from graphbench.evaluation import (
     ABLATIONS,
     CORE_FEATURES,
     GENERATORS,

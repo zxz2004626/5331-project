@@ -12,7 +12,7 @@ from unittest.mock import patch
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from graphbench.evaluate import (
+from graphbench.evaluation import (
     aggregate_results,
     build_model,
     compute_metrics,
@@ -20,7 +20,7 @@ from graphbench.evaluate import (
     run_evaluations,
     select_columns,
 )
-from graphbench.history import feature_groups
+from graphbench.features import feature_groups
 
 
 class MetricTests(unittest.TestCase):
@@ -159,7 +159,7 @@ class CacheEvaluationTests(unittest.TestCase):
             root = Path(temp)
             self._fixture(root)
             with patch(
-                "graphbench.evaluate.fit_selected_model",
+                "graphbench.evaluation.fit_selected_model",
                 side_effect=RuntimeError("test fit failure"),
             ):
                 counts = run_evaluations(

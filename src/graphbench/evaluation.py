@@ -1,9 +1,7 @@
 """Coordinate resumable fitting and cross-generator evaluation.
 
 Cache validation, metrics, model selection, result I/O and aggregation live in
-separate modules. Public imports here remain available to existing callers and
-serialized estimators from the previous layout.
-"""
+separate modules."""
 
 from __future__ import annotations
 

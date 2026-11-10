@@ -19,9 +19,9 @@ import numpy as np
 import sklearn
 from threadpoolctl import threadpool_limits
 
-from graphbench import evaluate
+from graphbench import evaluation
 from graphbench.artifacts import artifact_path
-from graphbench.evaluate import (
+from graphbench.evaluation import (
     GENERATORS,
     SEEDS,
     anomaly_scores,
@@ -89,12 +89,12 @@ def validate_source(source, cache, dataset, seed, generator, evaluation_hash):
 def run_one(root, dataset, seed, generator, n_jobs=2):
     root = Path(root).resolve()
     source_path = source_metadata_path(root, dataset, seed, generator)
-    source = evaluate._read_json(source_path)
+    source = evaluation._read_json(source_path)
     if source is None or not source_path.with_suffix(".joblib").exists():
         raise FileNotFoundError(f"Completed source extended model is unavailable: {source_path}")
     cache_path = root / f"results/cache/main/{dataset}/seed_{seed}/{generator}.npz"
     cache = load_cache(cache_path)
-    evaluation_hash = evaluate.evaluation_code_hash()
+    evaluation_hash = evaluation.evaluation_code_hash()
     parameter = validate_source(source, cache, dataset, seed, generator, evaluation_hash)
     names = [name for name in cache.names if name != REMOVED_FEATURE]
     configuration = {
@@ -111,32 +111,32 @@ def run_one(root, dataset, seed, generator, n_jobs=2):
         "n_jobs": n_jobs,
         "source_cache_fingerprint": cache.fingerprint,
         "source_model_metadata_file": source_path.relative_to(root).as_posix(),
-        "source_model_metadata_sha256": evaluate._file_hash(source_path),
+        "source_model_metadata_sha256": evaluation._file_hash(source_path),
         "source_model_fingerprint": source["model_fingerprint"],
         "evaluation_source_sha256": evaluation_hash,
-        "ablation_source_sha256": evaluate._file_hash(Path(__file__)),
+        "ablation_source_sha256": evaluation._file_hash(Path(__file__)),
         "python_version": platform.python_version(),
         "numpy_version": np.__version__,
         "sklearn_version": sklearn.__version__,
         "hyperparameter_origin": "source_extended_RF_validation_selection_reused_without_retuning",
         "selected_min_samples_leaf": parameter,
     }
-    fingerprint = evaluate._digest(configuration)
+    fingerprint = evaluation._digest(configuration)
     identifier = model_id(dataset, seed, generator)
     output = root / "results/no_pair"
     run_path = output / "runs" / f"{identifier}.json"
     prediction_path = output / "predictions" / f"{identifier}.npz"
-    previous = evaluate._read_json(run_path)
+    previous = evaluation._read_json(run_path)
     if (
         previous
         and previous.get("status") == "complete"
         and previous.get("run_fingerprint") == fingerprint
         and prediction_path.exists()
-        and previous.get("prediction_sha256") == evaluate._file_hash(prediction_path)
+        and previous.get("prediction_sha256") == evaluation._file_hash(prediction_path)
     ):
         print(f"RESUME no-pair {identifier}", flush=True)
         return previous, False
-    evaluate._write_json(
+    evaluation._write_json(
         run_path,
         {
             **configuration,
@@ -208,16 +208,16 @@ def run_one(root, dataset, seed, generator, n_jobs=2):
                 "evaluation_seconds": time.perf_counter() - start,
             },
             "prediction_file": prediction_path.relative_to(root).as_posix(),
-            "prediction_sha256": evaluate._file_hash(prediction_path),
+            "prediction_sha256": evaluation._file_hash(prediction_path),
             "tie_breaking": "ascending preserved cache row index",
             "feature_importance_impurity": {
                 name: float(value) for name, value in zip(names, model.feature_importances_)
             },
         }
-        evaluate._write_json(run_path, record)
+        evaluation._write_json(run_path, record)
         return record, True
     except Exception as error:
-        evaluate._write_json(
+        evaluation._write_json(
             run_path,
             {
                 **configuration,
@@ -236,11 +236,11 @@ def aggregate(root):
     root = Path(root).resolve()
     output = root / "results/no_pair"
     rows, missing, stale = [], [], []
-    script_hash = evaluate._file_hash(Path(__file__))
-    evaluation_hash = evaluate.evaluation_code_hash()
+    script_hash = evaluation._file_hash(Path(__file__))
+    evaluation_hash = evaluation.evaluation_code_hash()
     for dataset, seed, generator in itertools.product(DATASETS, SEEDS, GENERATORS):
         identifier = model_id(dataset, seed, generator)
-        record = evaluate._read_json(output / "runs" / f"{identifier}.json")
+        record = evaluation._read_json(output / "runs" / f"{identifier}.json")
         if not record or record.get("status") != "complete":
             missing.append(identifier)
             continue
@@ -251,18 +251,18 @@ def aggregate(root):
         paths = [source_path, prediction_path, cache_path, manifest_path]
         current = all(path.exists() for path in paths)
         if current:
-            cache_fingerprint = evaluate._digest(
+            cache_fingerprint = evaluation._digest(
                 {
-                    "npz_sha256": evaluate._file_hash(cache_path),
-                    "metadata_sha256": evaluate._file_hash(manifest_path),
+                    "npz_sha256": evaluation._file_hash(cache_path),
+                    "metadata_sha256": evaluation._file_hash(manifest_path),
                 }
             )
             current = (
                 record.get("ablation_source_sha256") == script_hash
                 and record.get("evaluation_source_sha256") == evaluation_hash
                 and record.get("source_cache_fingerprint") == cache_fingerprint
-                and record.get("source_model_metadata_sha256") == evaluate._file_hash(source_path)
-                and record.get("prediction_sha256") == evaluate._file_hash(prediction_path)
+                and record.get("source_model_metadata_sha256") == evaluation._file_hash(source_path)
+                and record.get("prediction_sha256") == evaluation._file_hash(prediction_path)
             )
         if not current:
             stale.append(identifier)
@@ -301,9 +301,9 @@ def aggregate(root):
         "ablation_source_sha256": script_hash,
         "evaluation_source_sha256": evaluation_hash,
     }
-    evaluate._write_json(output / "status.json", status)
+    evaluation._write_json(output / "status.json", status)
     if complete:
-        evaluate._write_csv(output / "metrics.csv", rows)
+        evaluation._write_csv(output / "metrics.csv", rows)
     elif (output / "metrics.csv").exists():
         # Generated summary is recoverable; never leave a stale complete table.
         (output / "metrics.csv").unlink()

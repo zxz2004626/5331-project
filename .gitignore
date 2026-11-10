@@ -12,4 +12,3 @@ vendor/
 results/cache/
 results/evaluation/*/models/
 results/evaluation/*/predictions/
-results/logs/

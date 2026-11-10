@@ -11,7 +11,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from graphbench.paths import ROOT
-from graphbench.report_inputs import load_diagnostics
+from graphbench.result_inputs import load_diagnostics
 
 OUT = ROOT / "results/report"
 FIG = OUT / "figures"

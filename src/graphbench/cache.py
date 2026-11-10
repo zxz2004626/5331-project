@@ -79,7 +79,7 @@ def load_cache(path: Path) -> Cache:
 
 
 def selected_names(cache: Cache, dataset: str, feature_set: str) -> list[str]:
-    from .history import feature_groups
+    from .features import feature_groups
 
     groups = feature_groups(dataset == "movielens")
     if feature_set == "extended":

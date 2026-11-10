@@ -14,7 +14,7 @@ import pandas as pd
 from scipy.stats import ks_2samp, wasserstein_distance
 
 from .data import ROOT, code_hash, load_dataset
-from .history import GraphHistory, feature_groups
+from .features import GraphHistory, feature_groups
 
 
 def scenario_config(scenario):

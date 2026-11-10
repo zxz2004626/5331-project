@@ -157,7 +157,7 @@ def implementation_hash(root, names):
 
 def generation_hash(root):
     return implementation_hash(
-        root, ("data.py", "generate.py", "history.py", "paths.py", "provenance.py")
+        root, ("data.py", "generators.py", "features.py", "paths.py", "provenance.py")
     )
 
 
@@ -218,14 +218,14 @@ class Audit:
                 "artifacts.py",
                 "cache.py",
                 "constants.py",
-                "evaluate.py",
+                "evaluation.py",
                 "metrics.py",
                 "models.py",
                 "provenance.py",
                 "summaries.py",
             ),
         )
-        self.no_pair_hash = file_hash(root / "src/graphbench/workflows/no_pair_ablation.py")
+        self.no_pair_hash = file_hash(root / "src/graphbench/workflows/pair_novelty_control.py")
         self.gen_hash = generation_hash(root)
         self.configuration = read_json(root / "configs/experiment.json")
         self.n_models_rescored = 0
@@ -936,7 +936,7 @@ class Audit:
             "optional_model_checksums": self.model_results,
             "check_notes": [
                 "No model fitting occurs. At most one feature cache and one optional estimator are resident.",
-                "All main and novel-normal metrics are recomputed independently of graphbench.evaluate.compute_metrics.",
+                "All main and novel-normal metrics are recomputed independently of graphbench.evaluation.compute_metrics.",
                 "Legality is checked against independently remapped original data, including warmup, full/past absence, unique injections, partitions, quotas and observed-event preservation.",
                 "Timestamp lineage arrays and audit logs are checked; all feature vectors are not regenerated from scratch.",
                 "Configuration/source/cache/model provenance fingerprints are checked. Serialized estimator rescoring is optional; main_audit.json already documents all360 main estimators.",

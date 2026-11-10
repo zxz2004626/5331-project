@@ -1,0 +1,51 @@
+FIT ratio01 movielens_seed11_G0_RF_tgf
+FIT ratio01 movielens_seed11_G0_RF_extended
+FIT ratio01 movielens_seed11_G3_RF_tgf
+FIT ratio01 movielens_seed11_G3_RF_extended
+CHECKPOINT ratio01 movielens seed=11 {"evaluations_resumed":0,"evaluations_written":4,"failures":0,"models_fitted":4,"models_resumed":0}
+FIT ratio01 movielens_seed23_G0_RF_tgf
+FIT ratio01 movielens_seed23_G0_RF_extended
+FIT ratio01 movielens_seed23_G3_RF_tgf
+FIT ratio01 movielens_seed23_G3_RF_extended
+CHECKPOINT ratio01 movielens seed=23 {"evaluations_resumed":0,"evaluations_written":8,"failures":0,"models_fitted":8,"models_resumed":0}
+FIT ratio01 movielens_seed37_G0_RF_tgf
+FIT ratio01 movielens_seed37_G0_RF_extended
+FIT ratio01 movielens_seed37_G3_RF_tgf
+FIT ratio01 movielens_seed37_G3_RF_extended
+CHECKPOINT ratio01 movielens seed=37 {"evaluations_resumed":0,"evaluations_written":12,"failures":0,"models_fitted":12,"models_resumed":0}
+FIT ratio01 movielens_seed51_G0_RF_tgf
+FIT ratio01 movielens_seed51_G0_RF_extended
+FIT ratio01 movielens_seed51_G3_RF_tgf
+FIT ratio01 movielens_seed51_G3_RF_extended
+CHECKPOINT ratio01 movielens seed=51 {"evaluations_resumed":0,"evaluations_written":16,"failures":0,"models_fitted":16,"models_resumed":0}
+FIT ratio01 movielens_seed71_G0_RF_tgf
+FIT ratio01 movielens_seed71_G0_RF_extended
+FIT ratio01 movielens_seed71_G3_RF_tgf
+FIT ratio01 movielens_seed71_G3_RF_extended
+CHECKPOINT ratio01 movielens seed=71 {"evaluations_resumed":0,"evaluations_written":20,"failures":0,"models_fitted":20,"models_resumed":0}
+FIT ratio01 ucimessages_seed11_G0_RF_tgf
+FIT ratio01 ucimessages_seed11_G0_RF_extended
+FIT ratio01 ucimessages_seed11_G3_RF_tgf
+FIT ratio01 ucimessages_seed11_G3_RF_extended
+CHECKPOINT ratio01 ucimessages seed=11 {"evaluations_resumed":0,"evaluations_written":24,"failures":0,"models_fitted":24,"models_resumed":0}
+FIT ratio01 ucimessages_seed23_G0_RF_tgf
+FIT ratio01 ucimessages_seed23_G0_RF_extended
+FIT ratio01 ucimessages_seed23_G3_RF_tgf
+FIT ratio01 ucimessages_seed23_G3_RF_extended
+CHECKPOINT ratio01 ucimessages seed=23 {"evaluations_resumed":0,"evaluations_written":28,"failures":0,"models_fitted":28,"models_resumed":0}
+FIT ratio01 ucimessages_seed37_G0_RF_tgf
+FIT ratio01 ucimessages_seed37_G0_RF_extended
+FIT ratio01 ucimessages_seed37_G3_RF_tgf
+FIT ratio01 ucimessages_seed37_G3_RF_extended
+CHECKPOINT ratio01 ucimessages seed=37 {"evaluations_resumed":0,"evaluations_written":32,"failures":0,"models_fitted":32,"models_resumed":0}
+FIT ratio01 ucimessages_seed51_G0_RF_tgf
+FIT ratio01 ucimessages_seed51_G0_RF_extended
+FIT ratio01 ucimessages_seed51_G3_RF_tgf
+FIT ratio01 ucimessages_seed51_G3_RF_extended
+CHECKPOINT ratio01 ucimessages seed=51 {"evaluations_resumed":0,"evaluations_written":36,"failures":0,"models_fitted":36,"models_resumed":0}
+FIT ratio01 ucimessages_seed71_G0_RF_tgf
+FIT ratio01 ucimessages_seed71_G0_RF_extended
+FIT ratio01 ucimessages_seed71_G3_RF_tgf
+FIT ratio01 ucimessages_seed71_G3_RF_extended
+CHECKPOINT ratio01 ucimessages seed=71 {"evaluations_resumed":0,"evaluations_written":40,"failures":0,"models_fitted":40,"models_resumed":0}
+{"evaluations_resumed": 0, "evaluations_written": 40, "failures": 0, "models_fitted": 40, "models_resumed": 0}

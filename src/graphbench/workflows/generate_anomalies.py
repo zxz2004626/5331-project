@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 
 from graphbench.constants import DATASETS, GENERATORS, SEEDS, SENSITIVITIES
 from graphbench.data import write_data_manifest
-from graphbench.generate import build_cache
+from graphbench.generators import build_cache
 from graphbench.paths import ROOT
 
 

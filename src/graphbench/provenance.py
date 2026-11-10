@@ -8,12 +8,12 @@ Historical results keep their original fingerprints and are never relabelled.
 import hashlib
 from pathlib import Path
 
-GENERATION_SOURCES = ("data.py", "generate.py", "history.py", "paths.py", "provenance.py")
+GENERATION_SOURCES = ("data.py", "generators.py", "features.py", "paths.py", "provenance.py")
 EVALUATION_SOURCES = (
     "artifacts.py",
     "cache.py",
     "constants.py",
-    "evaluate.py",
+    "evaluation.py",
     "metrics.py",
     "models.py",
     "provenance.py",

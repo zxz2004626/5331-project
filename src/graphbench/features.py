@@ -1,4 +1,4 @@
-"""Causal sliding-history graph features; see ``docs/features.md``.
+"""Causal sliding-history graph features with timestamp-batched updates.
 
 Call ``advance(t)``, score every event at timestamp t, then ``add`` that
 timestamp's observed (including injected) events.  Extraction never inserts an

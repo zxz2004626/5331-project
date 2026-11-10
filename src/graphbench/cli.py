@@ -8,13 +8,11 @@ from pathlib import Path
 
 COMMANDS = {
     "prepare": ("prepare_sources", "Fetch and verify the pinned TGF source"),
-    "generate": ("build_experiments", "Build timestamp-safe feature caches"),
-    "evaluate": ("evaluate_experiments", "Fit detectors and evaluate transfer"),
-    "no-pair": ("no_pair_ablation", "Run the prior-pair attribution control"),
+    "generate": ("generate_anomalies", "Build timestamp-safe feature caches"),
+    "evaluate": ("evaluate_models", "Fit detectors and evaluate transfer"),
+    "no-pair": ("pair_novelty_control", "Run the prior-pair attribution control"),
     "official": ("official_reproduction", "Reproduce the released TGF protocol"),
-    "report": ("report_results", "Regenerate tables and result figures"),
-    "write-report": ("write_report", "Write the Chinese experiment summary"),
-    "pdf": ("build_pdf_report", "Build the optional English experiment PDF"),
+    "summarize": ("summarize_results", "Regenerate tables and result figures"),
     "verify": ("verify_artifacts", "Independently audit experiment artifacts"),
     "run": ("pipeline", "Run the complete pipeline, or print its plan"),
 }

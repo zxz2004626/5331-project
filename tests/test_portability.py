@@ -13,7 +13,7 @@ from graphbench.artifacts import artifact_path
 from graphbench.cli import COMMANDS
 from graphbench.paths import ROOT, project_root
 from graphbench.provenance import EVALUATION_SOURCES, GENERATION_SOURCES, source_digest
-from graphbench.report_inputs import load_split_counts
+from graphbench.result_inputs import load_split_counts
 from graphbench.shell import find_bash, injection_command
 from graphbench.summaries import aggregate_results
 from graphbench.workflows.pipeline import pipeline_steps

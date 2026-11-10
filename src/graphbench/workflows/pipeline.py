@@ -53,7 +53,7 @@ def pipeline_steps(workers=1, model_jobs=2, no_pair_jobs=1, skip_official=False)
                 str(model_jobs),
             ],
         ]
-    steps += [["no-pair", "--n-jobs", str(no_pair_jobs)], ["verify"], ["report"], ["write-report"]]
+    steps += [["no-pair", "--n-jobs", str(no_pair_jobs)], ["verify"], ["summarize"]]
     return steps
 
 

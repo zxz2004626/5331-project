@@ -1,4 +1,4 @@
-"""Compatibility entry point; use python -m graphbench official."""
+"""Script entry point; use python -m graphbench official."""
 
 import sys
 from pathlib import Path
